@@ -17,7 +17,7 @@ const LoginPage = () => {
     const [error, seterror] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userId = useSelector((state: RootState) => state.auth.tokenDecode.Id);
+    const userId = useSelector((state: RootState) => state.auth.tokenDecode.nameid);
 
     //-------------------------- handle call call api signin --------------------------------//
     const [SignIn, { isLoading, isSuccess, isError, data, error: errorRequest }] =
@@ -27,6 +27,7 @@ const LoginPage = () => {
         if (isSuccess && data) {
             const tokenDecode = jwtDecode<TokenDecode>(data.token);
             dispatch(setToken(tokenDecode));
+            console.log(tokenDecode);
         }
     }, [isSuccess]);
 
@@ -50,6 +51,7 @@ const LoginPage = () => {
     //-------------------------- end handle call call api signin --------------------------------//
 
     //-------------------------- handle call call api get user info --------------------------------//
+    console.log(userId);
     const {
         isLoading: isGetUserLoading,
         isSuccess: isGetUserSuccess,

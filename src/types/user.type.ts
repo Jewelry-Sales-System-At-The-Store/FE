@@ -30,6 +30,7 @@ export interface Token {
 
 export interface TokenDecode {
     Id: string;
+    nameid: string;
     sub: string;
     email: string;
     role: string;

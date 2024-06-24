@@ -26,3 +26,6 @@ export interface Gem {
     gemQuantity: number;
     gemPrice: number;
 }
+export interface JewelryID {
+    jewelryId: string;
+}
