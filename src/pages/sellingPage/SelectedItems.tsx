@@ -1,4 +1,4 @@
-import { Button, Input, Popconfirm, Table, TableProps } from 'antd';
+import { Button, Input, Popconfirm, Table, TableProps, Tooltip } from 'antd';
 import { FaClock } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa6';
 import { CartItem } from '../../types/cart.type';
@@ -9,6 +9,7 @@ import { removeFromCart, setQuantity } from '../../slices/jewelrySlice';
 import { formatNumber } from '../../utils/formater';
 
 import { MdDelete } from 'react-icons/md';
+import SelectPromotionModal from '../../components/SelectPromotionModal';
 
 const SelectedItems = () => {
     const cart = useSelector((state: RootState) => state.jewelry.cart);
@@ -32,7 +33,13 @@ const SelectedItems = () => {
             title: 'Hàng hóa',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <p className="w-[150px] max-w-[150px] overflow-x-auto">{text}</p>,
+            render: (text) => (
+                <Tooltip title={text}>
+                    <p className="line-clamp-1 w-[120px] max-w-[120px] cursor-help overflow-x-auto">
+                        {text}
+                    </p>
+                </Tooltip>
+            ),
         },
         {
             title: 'S.L',
@@ -48,7 +55,7 @@ const SelectedItems = () => {
                     numberType="Integer"
                     childen={
                         <Input
-                            className="border-green-OUTLINE max-w-[100px] rounded-sm text-right"
+                            className="max-w-[100px] rounded-sm border-green-OUTLINE text-right"
                             value={formatNumber(quantity + '')}
                         />
                     }
@@ -104,7 +111,7 @@ const SelectedItems = () => {
         },
     ];
     return (
-        <div className="flex min-w-[490px] flex-col gap-2 bg-primary px-2 pt-1 text-white">
+        <div className="flex min-w-[600px] max-w-[600px] flex-col gap-2 bg-primary px-2 pt-1 text-white">
             <div className="flex justify-between">
                 <p className="font-medium">Quầy 15 - Bán hàng</p>
                 <div className="flex items-center gap-1">
@@ -131,12 +138,23 @@ const SelectedItems = () => {
             <div className="flex-1">
                 <Table columns={columns} dataSource={cart} />
             </div>
-            <div className="grid grid-cols-2">
-                <div className="flex justify-end">
-                    <p>Tổng tiền:</p>
-                    <div className="text-lg font-medium text-[#333]">
+            <div className="grid grid-cols-2 p-2">
+                <div className="flex items-center justify-end gap-1">
+                    <p className="text-lg">Tổng tiền:</p>
+                    <div className="rounded-sm bg-white px-2 text-xl font-medium text-[#333]">
                         <p>{formatNumber(tempCart.totalPrice + '')}</p>
                     </div>
+                </div>
+                <div className="flex cursor-pointer items-center justify-end gap-1">
+                    <p className="text-lg">Giảm bill:</p>
+                    <SelectPromotionModal
+                        title="Điều chỉnh khuyến mãi"
+                        childen={
+                            <div className="rounded-sm bg-white px-2 text-xl font-medium text-[#333]">
+                                <p>{formatNumber(tempCart.discount + '')}</p>
+                            </div>
+                        }
+                    />
                 </div>
             </div>
         </div>

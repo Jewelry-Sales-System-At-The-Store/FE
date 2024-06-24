@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Jewelry } from '../types/jewelry.type';
 import { FaCheckCircle } from 'react-icons/fa';
+import { formatNumber } from '../utils/formater';
 
 interface ItemProps {
     item: Jewelry;
@@ -32,7 +33,9 @@ const Item = ({ item, onItemClick }: ItemProps) => {
                 </p>
                 <div>
                     <p className="text-wrap text-sm text-primary">{item.type}</p>
-                    <p className="text-sm font-medium text-red-400">{item.totalPrice}$</p>
+                    <p className="text-sm font-medium text-red-400">
+                        {formatNumber(item.totalPrice + '')}$
+                    </p>
                 </div>
             </div>
         </div>

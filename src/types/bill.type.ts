@@ -1,5 +1,5 @@
 import { JewelryID } from './jewelry.type';
-import { Promotion, PromotionID } from './promotion.type';
+import { PromotionBill, PromotionID } from './promotion.type';
 
 export interface Bill {
     id: string;
@@ -10,7 +10,7 @@ export interface Bill {
     totalDiscount: number;
     saleDate: string;
     items: Item[];
-    promotions: Promotion[];
+    promotions: PromotionBill[];
     additionalDiscount: number;
     pointsUsed: number;
     finalAmount: number;

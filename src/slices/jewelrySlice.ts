@@ -15,6 +15,7 @@ export interface JewelryState {
     cart: CartItem[];
     bill: CreateBillRequest;
     tempCart: TempCart;
+    promotionsSelected: string[];
 }
 
 const initBill: CreateBillRequest = {
@@ -37,6 +38,7 @@ const initialState: JewelryState = {
     cart: [],
     bill: initBill,
     tempCart: initTempCart,
+    promotionsSelected: [],
 };
 
 const callMoney = (state: JewelryState) => {
@@ -89,11 +91,20 @@ export const jewelrySlice = createSlice({
             state.bill = initBill;
         },
         callMoney,
+        toggelPromotion(state, action: PayloadAction<string>) {
+            const index = state.promotionsSelected.indexOf(action.payload);
+            if (index >= 0) {
+                state.promotionsSelected.splice(index, 1);
+            } else {
+                state.promotionsSelected.push(action.payload);
+            }
+        },
     },
 });
 
 export const selectAuth = (state: RootState) => state.jewelry;
 
-export const { addToCart, clearCart, removeFromCart, setQuantity } = jewelrySlice.actions;
+export const { addToCart, clearCart, removeFromCart, setQuantity, toggelPromotion } =
+    jewelrySlice.actions;
 
 export default jewelrySlice.reducer;

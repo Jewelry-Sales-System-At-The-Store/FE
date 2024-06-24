@@ -41,6 +41,7 @@ const initToken: TokenDecode = {
     nbf: 0,
     role: '',
     sub: '',
+    nameid: 'test',
 };
 
 const initialState: AuthState = {
