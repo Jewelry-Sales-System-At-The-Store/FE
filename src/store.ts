@@ -15,6 +15,7 @@ import accountApi from './services/accountApi';
 import jewelryApi from './services/jewelryApi';
 import jewelrySlice from './slices/jewelrySlice';
 import promotionApi from './services/promotionApi';
+import billApi from './services/billsApi';
 
 export const persistConfig = {
     key: 'root',
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     [accountApi.reducerPath]: accountApi.reducer,
     [jewelryApi.reducerPath]: jewelryApi.reducer,
     [promotionApi.reducerPath]: promotionApi.reducer,
+    [billApi.reducerPath]: billApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -42,7 +44,8 @@ export const store = configureStore({
         })
             .concat(accountApi.middleware)
             .concat(jewelryApi.middleware)
-            .concat(promotionApi.middleware),
+            .concat(promotionApi.middleware)
+            .concat(billApi.middleware),
 });
 
 // get roostate and appdispatch from store handle for typescript

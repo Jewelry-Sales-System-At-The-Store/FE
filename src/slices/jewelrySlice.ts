@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { Jewelry } from '../types/jewelry.type';
+import { Jewelry, JewelryID } from '../types/jewelry.type';
 import { CartItem } from '../types/cart.type';
-import { CreateBillRequest } from '../types/bill.type';
 
 interface TempCart {
     totalPrice: number;
@@ -10,15 +9,29 @@ interface TempCart {
     pay: number;
 }
 
+interface TermPromotion {
+    discountRate: number;
+    promotionId: string;
+}
+
+interface TempBill {
+    customerId: string;
+    userId: string;
+    counterId: string;
+    additionalDiscount: number;
+    jewelries: JewelryID[];
+    promotions: TermPromotion[];
+}
+
 export interface JewelryState {
     selectedItems: Jewelry[];
     cart: CartItem[];
-    bill: CreateBillRequest;
+    bill: TempBill;
     tempCart: TempCart;
-    promotionsSelected: string[];
+    promotionsSelected: TermPromotion[];
 }
 
-const initBill: CreateBillRequest = {
+const initBill: TempBill = {
     additionalDiscount: 0,
     counterId: '',
     customerId: '',
@@ -91,20 +104,42 @@ export const jewelrySlice = createSlice({
             state.bill = initBill;
         },
         callMoney,
-        toggelPromotion(state, action: PayloadAction<string>) {
-            const index = state.promotionsSelected.indexOf(action.payload);
+        toggelPromotion(state, action: PayloadAction<TermPromotion>) {
+            const index = state.promotionsSelected.findIndex(
+                (p) => p.promotionId === action.payload.promotionId,
+            );
             if (index >= 0) {
                 state.promotionsSelected.splice(index, 1);
             } else {
                 state.promotionsSelected.push(action.payload);
             }
         },
+        clearPromotionSelected(state) {
+            state.promotionsSelected = [];
+        },
+        savePromotionSelected(state) {
+            state.bill.promotions = state.promotionsSelected;
+            let totalPromotion = 0;
+            state.promotionsSelected.forEach((p) => (totalPromotion += p.discountRate));
+            state.tempCart.discount = (state.tempCart.totalPrice * totalPromotion) / 100;
+        },
+        loadPromotionSelected(state) {
+            state.promotionsSelected = state.bill.promotions;
+        },
     },
 });
 
 export const selectAuth = (state: RootState) => state.jewelry;
 
-export const { addToCart, clearCart, removeFromCart, setQuantity, toggelPromotion } =
-    jewelrySlice.actions;
+export const {
+    addToCart,
+    clearCart,
+    removeFromCart,
+    setQuantity,
+    toggelPromotion,
+    clearPromotionSelected,
+    savePromotionSelected,
+    loadPromotionSelected,
+} = jewelrySlice.actions;
 
 export default jewelrySlice.reducer;

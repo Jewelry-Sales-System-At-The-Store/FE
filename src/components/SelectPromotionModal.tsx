@@ -2,6 +2,12 @@ import { Button, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import promotionApi from '../services/promotionApi';
 import PromotionItem from './PromotionItem';
+import { useDispatch } from 'react-redux';
+import {
+    clearPromotionSelected,
+    loadPromotionSelected,
+    savePromotionSelected,
+} from '../slices/jewelrySlice';
 interface SelectPromotionModalProps {
     title: string;
     childen: React.ReactNode;
@@ -10,7 +16,7 @@ interface SelectPromotionModalProps {
 const SelectPromotionModal = ({ childen, title }: SelectPromotionModalProps) => {
     //------------------------ call api get sales ---------------------//
     const { isLoading, isError, error, data } = promotionApi.useGetJewelriesQuery();
-
+    const dispatch = useDispatch();
     useEffect(() => {
         if (isError) {
             console.log('error load promotion: ', error);
@@ -21,7 +27,14 @@ const SelectPromotionModal = ({ childen, title }: SelectPromotionModalProps) => 
     const [open, setopen] = useState(false);
     return (
         <div>
-            <div onClick={() => setopen(true)}>{childen}</div>
+            <div
+                onClick={() => {
+                    setopen(true);
+                    dispatch(loadPromotionSelected());
+                }}
+            >
+                {childen}
+            </div>
             <Modal
                 width={300}
                 style={{ padding: 0 }}
@@ -34,6 +47,7 @@ const SelectPromotionModal = ({ childen, title }: SelectPromotionModalProps) => 
                                 type="primary"
                                 className="rounded-sm bg-primary px-5 py-1 !text-white"
                                 onClick={() => {
+                                    dispatch(savePromotionSelected());
                                     setopen(false);
                                 }}
                             >
@@ -43,6 +57,7 @@ const SelectPromotionModal = ({ childen, title }: SelectPromotionModalProps) => 
                                 type="primary"
                                 className="rounded-sm bg-red-400 px-5 py-1 !text-white"
                                 onClick={() => {
+                                    dispatch(clearPromotionSelected());
                                     setopen(false);
                                 }}
                             >

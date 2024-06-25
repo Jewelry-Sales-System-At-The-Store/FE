@@ -14,6 +14,7 @@ import SelectPromotionModal from '../../components/SelectPromotionModal';
 const SelectedItems = () => {
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const tempCart = useSelector((state: RootState) => state.jewelry.tempCart);
+
     const dispatch = useDispatch();
     const getCurrentTime = () => {
         const options: Intl.DateTimeFormatOptions = {
