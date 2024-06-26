@@ -2,13 +2,16 @@ import MenuItem from '../../components/MenuItem';
 import { FaFolderOpen } from 'react-icons/fa6';
 import { IoIosSave } from 'react-icons/io';
 import { IoIosPrint } from 'react-icons/io';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import billApi from '../../services/billsApi';
 import { useEffect } from 'react';
 import { RootState } from '../../store';
+import { CreateBillRequest } from '../../types/bill.type';
+import { PiUserGearFill } from 'react-icons/pi';
+import InputCustomerModal from '../../components/InputCustomerModal';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
-type Options = 'saveBill' | 'printBill';
+type Options = 'saveBill' | 'printBill' | 'customerInfo';
 interface RightOptions {
     icon: React.ReactNode;
     title: string;
@@ -17,6 +20,12 @@ interface RightOptions {
 }
 
 const rightOptions: RightOptions[] = [
+    {
+        icon: <PiUserGearFill size={24} />,
+        title: 'Thông tin khách hàng',
+        color: colors[2],
+        id: 'customerInfo',
+    },
     {
         icon: <IoIosSave size={24} />,
         title: 'Lưu hóa đơn',
@@ -34,6 +43,7 @@ const rightOptions: RightOptions[] = [
 const SellingPageFooter = () => {
     //const dispatch = useDispatch();
     const tempBill = useSelector((state: RootState) => state.jewelry.bill);
+    const cart = useSelector((state: RootState) => state.jewelry.cart);
     const user = useSelector((state: RootState) => state.auth.user);
     //------------------------ handle call api create bills ----------------------//
 
@@ -53,12 +63,39 @@ const SellingPageFooter = () => {
 
     //------------------------ end handle call api create bills ----------------------//
 
+    // //------------------------ handle call api create bills ----------------------//
+
+    // const [CreateBill, { isLoading, isSuccess, data, isError, error }] =
+    //     billApi.useCreateBillMutation();
+
+    // useEffect(() => {
+    //     if (isSuccess && data) {
+    //     }
+    // }, [isSuccess]);
+
+    // useEffect(() => {
+    //     if (isError) {
+    //         console.log(error);
+    //     }
+    // }, [isError]);
+
+    // //------------------------ end handle call api create bills ----------------------//
+
     const handleBtnClick = (options: Options) => {
         switch (options) {
             case 'saveBill':
-                CreateBill({ ...tempBill, userId: user.userId, counterId: user.counterId });
+                const d: CreateBillRequest = {
+                    ...tempBill,
+                    userId: user.userId,
+                    counterId: user.counterNumber + '',
+                    jewelries: cart.map((cart) => ({ jewelryId: cart.id })),
+                };
+                console.log(d);
+                CreateBill(d);
                 break;
             case 'printBill':
+                break;
+            case 'customerInfo':
                 break;
         }
     };
@@ -91,6 +128,7 @@ const SellingPageFooter = () => {
                     />
                 ))}
             </div>
+            <InputCustomerModal title="Thông tin khách hàng" />
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import jewelryApi from '../../services/jewelryApi';
-import { Spin } from 'antd';
+import { Skeleton, Spin } from 'antd';
 
 const ProverCategory = () => {
     //-----------------------handle call get Jewelries type ---------------------------//
@@ -27,8 +27,8 @@ const ProverCategory = () => {
                 </div>
             )}
             {isLoading && (
-                <div className="flex min-h-[200px] items-center justify-center">
-                    <Spin size="large" />
+                <div className="flex items-center justify-center">
+                    <Skeleton active />
                 </div>
             )}
         </div>

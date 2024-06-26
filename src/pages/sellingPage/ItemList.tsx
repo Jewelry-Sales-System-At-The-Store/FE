@@ -11,20 +11,28 @@ import { FaChevronCircleLeft } from 'react-icons/fa';
 import { FaChevronCircleRight } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../slices/jewelrySlice';
-const tabs = [
+
+type SellingHeaderTab = 'Counters' | 'Jewelrys';
+interface Tab {
+    id: SellingHeaderTab;
+    title: string;
+}
+
+const tabs: Tab[] = [
     {
-        id: 1,
+        id: 'Counters',
         title: 'Quầy',
     },
     {
-        id: 2,
+        id: 'Jewelrys',
         title: 'Trang sức',
     },
 ];
 
 const ItemList = () => {
-    const [selectedTab, setselectedTab] = useState(2);
+    const [selectedTab, setselectedTab] = useState<SellingHeaderTab>('Jewelrys');
     const [selectedSubTab, setselectedSubTab] = useState(1);
+
     const dispatch = useDispatch();
     const [itemList, setitemList] = useState<PaggingRespone<Jewelry>>({
         data: [],
@@ -102,6 +110,7 @@ const ItemList = () => {
                 )}
             </div>
             <div className="flex flex-wrap gap-1 p-2 pr-4">
+                {/* display items */}
                 {!isLoading &&
                     data &&
                     itemList.data.map((item, index) => (
@@ -116,6 +125,7 @@ const ItemList = () => {
                         <Spin size="large" />
                     </div>
                 )}
+                {/* display pagging  */}
                 {itemList.pageNumber > 1 && (
                     <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300">
                         <FaChevronCircleLeft size={50} />
@@ -127,7 +137,6 @@ const ItemList = () => {
                     </div>
                 )}
             </div>
-            <div></div>
         </div>
     );
 };

@@ -8,9 +8,10 @@ export const billApi = createApi({
     refetchOnMountOrArgChange: true,
     endpoints: (builder) => ({
         createBill: builder.mutation<any, CreateBillRequest>({
-            query: () => ({
+            query: (body) => ({
                 url: `api/Bill/CreateBill`,
                 method: 'POST',
+                body,
             }),
         }),
     }),

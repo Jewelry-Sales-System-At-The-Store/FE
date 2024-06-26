@@ -1,26 +1,28 @@
 export interface User {
     userId: string;
-    roleId: string;
-    counterId: string;
+    roleName: string;
+    counterNumber: number;
     username: string;
-    fullName: any;
-    gender: any;
-    phoneNumber: any;
+    fullName: string;
+    gender: string;
+    phoneNumber: string;
     email: string;
-    password: string;
     status: boolean;
-    createdAt: any;
-    updatedAt: any;
-    bills: any[];
-    counter: any;
-    purchases: any[];
-    role: Role;
 }
 
 export interface Role {
     roleId: string;
     roleName: string;
     users: any[];
+}
+
+export interface AddUser {
+    roleId: string;
+    username: string;
+    fullName: string;
+    gender: string;
+    email: string;
+    password: string;
 }
 
 export interface Token {
@@ -48,4 +50,7 @@ export interface JewelryType {
     jewelries: any[];
 }
 
-export type SignInRequest = Pick<User, 'email' | 'password'>;
+export interface SignInRequest {
+    email: string;
+    password: string;
+}

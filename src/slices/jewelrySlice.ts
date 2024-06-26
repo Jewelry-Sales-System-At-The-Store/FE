@@ -59,6 +59,9 @@ const callMoney = (state: JewelryState) => {
     state.cart.forEach((item) => (total += item.price * item.quantity));
     state.tempCart.totalPrice = total;
     state.tempCart.pay = total - state.tempCart.discount;
+    let totalPromotion = 0;
+    state.promotionsSelected.forEach((p) => (totalPromotion += p.discountRate));
+    state.tempCart.discount = (state.tempCart.totalPrice * totalPromotion) / 100;
 };
 
 export const jewelrySlice = createSlice({
@@ -86,7 +89,7 @@ export const jewelrySlice = createSlice({
                     price: totalPrice,
                     quantity: 1,
                     sale: 0,
-                    user: 'test',
+                    user: '',
                 };
                 state.cart.push(newCartItem);
             }
@@ -102,6 +105,7 @@ export const jewelrySlice = createSlice({
         },
         clearBill(state) {
             state.bill = initBill;
+            state.promotionsSelected = [];
         },
         callMoney,
         toggelPromotion(state, action: PayloadAction<TermPromotion>) {
@@ -119,9 +123,7 @@ export const jewelrySlice = createSlice({
         },
         savePromotionSelected(state) {
             state.bill.promotions = state.promotionsSelected;
-            let totalPromotion = 0;
-            state.promotionsSelected.forEach((p) => (totalPromotion += p.discountRate));
-            state.tempCart.discount = (state.tempCart.totalPrice * totalPromotion) / 100;
+            callMoney(state);
         },
         loadPromotionSelected(state) {
             state.promotionsSelected = state.bill.promotions;

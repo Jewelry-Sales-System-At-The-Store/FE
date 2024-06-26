@@ -8,24 +8,13 @@ export interface AuthState {
 }
 
 const initUser: User = {
-    bills: [],
-    counter: '',
-    counterId: '',
-    createdAt: '',
+    counterNumber: 0,
     email: '',
     fullName: '',
     gender: '',
-    password: '',
     phoneNumber: '',
-    purchases: [],
-    role: {
-        roleId: '',
-        roleName: '',
-        users: [],
-    },
-    roleId: '',
+    roleName: '',
     status: false,
-    updatedAt: '',
     userId: '',
     username: '',
 };

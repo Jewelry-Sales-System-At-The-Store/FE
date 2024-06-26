@@ -51,7 +51,7 @@ const LoginPage = () => {
     //-------------------------- end handle call call api signin --------------------------------//
 
     //-------------------------- handle call call api get user info --------------------------------//
-    console.log(userId);
+
     const {
         isLoading: isGetUserLoading,
         isSuccess: isGetUserSuccess,
@@ -62,6 +62,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (isGetUserSuccess && userData) {
+            console.log(userData);
             dispatch(setUser(userData));
             navigate('/manager/');
         }

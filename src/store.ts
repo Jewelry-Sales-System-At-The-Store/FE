@@ -16,6 +16,7 @@ import jewelryApi from './services/jewelryApi';
 import jewelrySlice from './slices/jewelrySlice';
 import promotionApi from './services/promotionApi';
 import billApi from './services/billsApi';
+import customerSlice from './slices/customerSlice';
 
 export const persistConfig = {
     key: 'root',
@@ -26,6 +27,7 @@ export const persistConfig = {
 const rootReducer = combineReducers({
     auth: authSlice,
     jewelry: jewelrySlice,
+    customer: customerSlice,
     [accountApi.reducerPath]: accountApi.reducer,
     [jewelryApi.reducerPath]: jewelryApi.reducer,
     [promotionApi.reducerPath]: promotionApi.reducer,
