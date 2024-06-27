@@ -13,16 +13,17 @@ interface InputCustomerModalProps {
     title: string;
 }
 
-const initValue = {
-    phone: '',
-};
 const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
     const dispatch = useDispatch();
     const open = useSelector((state: RootState) => state.customer.showCustomerModal);
     const customer = useSelector((state: RootState) => state.customer.customer);
     const [isNotFount, setisNotFount] = useState(false);
     const [searchPhone, setsearchPhone] = useState('');
-
+    const [isCreateNew, setisCreateNew] = useState(false);
+    const tempPhone = useSelector((state: RootState) => state.customer.tempPhone);
+    const initValue = {
+        phone: tempPhone,
+    };
     // -------------------------------- call api find customer by phone ----------------------------//
     const { currentData, isError, isLoading, isSuccess } =
         customerApi.useFindCustomerByPhoneQuery(searchPhone);
@@ -31,7 +32,7 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
         if (isSuccess && currentData) {
             dispatch(setCustomer(currentData));
         }
-    }, [isSuccess]);
+    }, [isSuccess, currentData]);
 
     useEffect(() => {
         if (isError) {
@@ -63,11 +64,17 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
             >
                 <div className="w-[400px] max-w-[400px] p-6">
                     {/* show find customer dialog when slice dont have data */}
-                    {customer && customer.customerId.length == 0 && (
+                    {!isCreateNew && customer && customer.customerId.length == 0 && (
                         <div>
                             <Form
                                 initialValues={initValue}
-                                onFinish={(v) => setsearchPhone(v.phone)}
+                                onFinish={(v) => {
+                                    if (currentData && currentData.phone == v.phone) {
+                                        dispatch(setCustomer(currentData));
+                                    } else {
+                                        setsearchPhone(v.phone);
+                                    }
+                                }}
                                 className="flex gap-2"
                             >
                                 <Form.Item name={'phone'} className="w-full">
@@ -110,6 +117,7 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
                                 size="middle"
                                 className="mt-5 w-full rounded-sm bg-secondary text-white hover:!bg-secondary-LIGHT"
                                 icon={<FaUserPlus />}
+                                onClick={() => setisCreateNew(true)}
                             >
                                 <p>Tạo mới</p>
                             </Button>
@@ -121,7 +129,10 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
                                 type="link"
                                 className="absolute -left-5 -top-8"
                                 icon={<FaAngleLeft />}
-                                onClick={() => dispatch(clearCustomer())}
+                                onClick={() => {
+                                    dispatch(clearCustomer());
+                                    setisCreateNew(false);
+                                }}
                             >
                                 Thay đổi
                             </Button>
@@ -136,6 +147,19 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
                             >
                                 Tiếp tục thanh toán
                             </Button>
+                        </div>
+                    )}
+                    {isCreateNew && customer && customer.customerId.length == 0 && (
+                        <div className="relative mt-4">
+                            <Button
+                                type="link"
+                                className="absolute -left-5 -top-10"
+                                icon={<FaAngleLeft />}
+                                onClick={() => setisCreateNew(false)}
+                            >
+                                Quay lại
+                            </Button>
+                            <CustomerInfo mode={'Create'} />
                         </div>
                     )}
                 </div>

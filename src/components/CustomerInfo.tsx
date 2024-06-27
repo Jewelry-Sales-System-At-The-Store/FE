@@ -30,21 +30,26 @@ const customizeRequiredMark = (label: React.ReactNode, { required }: { required:
 
 const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
     const dispatch = useDispatch();
-    const [newCustomer, setnewCustomer] = useState(initFormData);
     //------------------------- call api add new customer -----------------------------//
 
-    const [AddCustomer, { isError, isLoading, isSuccess, data }] =
+    const [AddCustomer, { isError, isLoading, isSuccess, error, data }] =
         customerApi.useCreateCustomerMutation();
 
     useEffect(() => {
         if (isSuccess && data) {
+            dispatch(setCustomer(data));
         }
     }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError) {
+            console.log(error);
+        }
+    }, [isError]);
 
     //------------------------- end call api add new customer -----------------------------//
 
     const onSubmit = (values: CreateCustomerRequest) => {
-        setnewCustomer(values);
         AddCustomer(values);
     };
 
@@ -95,7 +100,10 @@ const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
                                 { required: true, message: 'Vui lòng không để trống trường này!' },
                             ]}
                         >
-                            <Input placeholder="Nguyễn Văn A" />
+                            <Input
+                                className="rounded-sm border-green-OUTLINE"
+                                placeholder="Nguyễn Văn A"
+                            />
                         </Form.Item>
                         <Form.Item
                             name="phone"
@@ -105,7 +113,10 @@ const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
                                 { pattern: /^\d{10,11}$/, message: 'Số điện thoại không hợp lệ!' },
                             ]}
                         >
-                            <Input placeholder="12345678910" />
+                            <Input
+                                className="rounded-sm border-green-OUTLINE"
+                                placeholder="12345678910"
+                            />
                         </Form.Item>
                         <Form.Item
                             name="address"
@@ -114,12 +125,16 @@ const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
                                 { required: true, message: 'Vui lòng không để trống trường này!' },
                             ]}
                         >
-                            <Input placeholder="Nhập địa chỉ" />
+                            <Input
+                                className="rounded-sm border-green-OUTLINE"
+                                placeholder="Nhập địa chỉ"
+                            />
                         </Form.Item>
                         <Button
                             className="w-full rounded-sm bg-secondary hover:!bg-secondary-LIGHT"
                             type="primary"
                             htmlType="submit"
+                            loading={isLoading}
                         >
                             Tạo hồ sơ khách hàng
                         </Button>

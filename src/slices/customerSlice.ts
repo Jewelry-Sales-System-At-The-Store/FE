@@ -5,6 +5,7 @@ import { Customer } from '../types/customer.type';
 export interface CustomerState {
     customer: Customer;
     showCustomerModal: boolean;
+    tempPhone: string;
 }
 const initCustomer: Customer = {
     address: '',
@@ -20,6 +21,7 @@ const initCustomer: Customer = {
 const initialState: CustomerState = {
     customer: initCustomer,
     showCustomerModal: true,
+    tempPhone: '',
 };
 
 export const customerState = createSlice({
@@ -33,6 +35,7 @@ export const customerState = createSlice({
             state.showCustomerModal = action.payload;
         },
         clearCustomer: (state) => {
+            state.tempPhone = state.customer.phone;
             state.customer = initCustomer;
         },
     },

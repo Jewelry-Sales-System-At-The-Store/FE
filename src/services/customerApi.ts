@@ -7,7 +7,7 @@ export const customerApi = createApi({
     tagTypes: ['customer'],
     refetchOnMountOrArgChange: true,
     endpoints: (builder) => ({
-        createCustomer: builder.mutation<void, CreateCustomerRequest>({
+        createCustomer: builder.mutation<Customer, CreateCustomerRequest>({
             query: (body) => ({
                 url: 'api/Customer/CreateCustomer',
                 method: 'POST',
