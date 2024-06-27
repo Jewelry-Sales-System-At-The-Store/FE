@@ -1,0 +1,135 @@
+import { Button, Form, Input, Tag } from 'antd';
+import { CreateCustomerRequest, Customer } from '../types/customer.type';
+import { useEffect, useState } from 'react';
+import customerApi from '../services/customerApi';
+import { useDispatch } from 'react-redux';
+import { setCustomer } from '../slices/customerSlice';
+
+type Mode = 'Update' | 'Create' | 'View';
+interface CustomerInfoProps {
+    mode: Mode;
+    value?: Customer;
+}
+
+const initFormData: CreateCustomerRequest = {
+    address: '',
+    email: '',
+    fullName: '',
+    gender: '',
+    phone: '',
+    point: 0,
+    userName: '',
+};
+
+const customizeRequiredMark = (label: React.ReactNode, { required }: { required: boolean }) => (
+    <>
+        {required ? <Tag color="cyan-inverse">Bắt buộc</Tag> : <Tag color="green">Tùy chọn</Tag>}
+        {label}
+    </>
+);
+
+const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
+    const dispatch = useDispatch();
+    const [newCustomer, setnewCustomer] = useState(initFormData);
+    //------------------------- call api add new customer -----------------------------//
+
+    const [AddCustomer, { isError, isLoading, isSuccess, data }] =
+        customerApi.useCreateCustomerMutation();
+
+    useEffect(() => {
+        if (isSuccess && data) {
+        }
+    }, [isSuccess]);
+
+    //------------------------- end call api add new customer -----------------------------//
+
+    const onSubmit = (values: CreateCustomerRequest) => {
+        console.log(values);
+        setnewCustomer(values);
+        AddCustomer(values);
+    };
+
+    return (
+        <div className="text-[#333]">
+            {mode == 'View' && (
+                <div>
+                    <div className="flex justify-between gap-2">
+                        <p className="text-base">
+                            <b className="font-medium">Họ và tên:</b>
+                        </p>
+                        <p className="text-base font-bold capitalize text-primary-TEXT">
+                            Nguyễn Thành long
+                        </p>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                        <p className="text-base">
+                            <b className="font-medium">Số điện thoại:</b>
+                        </p>
+                        <p className="text-base font-bold text-secondary-DARK">0389142366</p>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                        <p className="text-base">
+                            <b className="font-medium">Điểm tích lũy:</b>
+                        </p>
+                        <p className="text-base font-bold text-red-400">10 Points</p>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                        <p className="text-base">
+                            <b className="font-medium">Địa chỉ: </b>
+                            Hẻm 68, lê văn việt, Quận 9 , tp. Hồ chí minh inosa fksanjf slfknsa
+                            dfklsandf
+                        </p>
+                    </div>
+                </div>
+            )}
+            {mode == 'Create' && (
+                <div className="mt-5">
+                    <Form
+                        requiredMark={customizeRequiredMark}
+                        initialValues={initFormData}
+                        onFinish={onSubmit}
+                        layout="vertical"
+                    >
+                        <Form.Item
+                            label={<b className="font-medium">Họ và tên</b>}
+                            name="fullName"
+                            rules={[
+                                { required: true, message: 'Vui lòng không để trống trường này!' },
+                            ]}
+                        >
+                            <Input placeholder="Nguyễn Văn A" />
+                        </Form.Item>
+                        <Form.Item
+                            name="phone"
+                            label={<b className="font-medium">Số điện thoại</b>}
+                            rules={[
+                                { required: true, message: 'Vui lòng không để trống trường này!' },
+                                { pattern: /^\d{10,11}$/, message: 'Số điện thoại không hợp lệ!' },
+                            ]}
+                        >
+                            <Input placeholder="12345678910" />
+                        </Form.Item>
+                        <Form.Item
+                            name="address"
+                            label={<b className="font-medium">Địa chỉ</b>}
+                            rules={[
+                                { required: true, message: 'Vui lòng không để trống trường này!' },
+                            ]}
+                        >
+                            <Input placeholder="Nhập địa chỉ" />
+                        </Form.Item>
+                        <Button
+                            className="w-full rounded-sm bg-secondary hover:!bg-secondary-LIGHT"
+                            type="primary"
+                            htmlType="submit"
+                        >
+                            Tạo hồ sơ khách hàng
+                        </Button>
+                    </Form>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default CustomerInfo;

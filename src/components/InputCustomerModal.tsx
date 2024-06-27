@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useState } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
+import CustomerInfo from './CustomerInfo';
 
 interface InputCustomerModalProps {
     title: string;
@@ -82,39 +83,7 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
                             </Button>
                         </div>
                     )}
-                    {customer && customer.customerId.length > 0 && (
-                        <div className="text-[#333]">
-                            <div className="flex justify-between gap-2">
-                                <p className="text-base">
-                                    <b className="font-medium">Họ và tên:</b>
-                                </p>
-                                <p className="text-base font-bold capitalize text-primary-TEXT">
-                                    Nguyễn Thành long
-                                </p>
-                            </div>
-                            <div className="flex justify-between gap-2">
-                                <p className="text-base">
-                                    <b className="font-medium">Số điện thoại:</b>
-                                </p>
-                                <p className="text-base font-bold text-secondary-DARK">
-                                    0389142366
-                                </p>
-                            </div>
-                            <div className="flex justify-between gap-2">
-                                <p className="text-base">
-                                    <b className="font-medium">Điểm tích lũy:</b>
-                                </p>
-                                <p className="text-base font-bold text-red-400">10 Points</p>
-                            </div>
-                            <div className="flex justify-between gap-2">
-                                <p className="text-base">
-                                    <b className="font-medium">Địa chỉ: </b>
-                                    Hẻm 68, lê văn việt, Quận 9 , tp. Hồ chí minh inosa fksanjf
-                                    slfknsa dfklsandf
-                                </p>
-                            </div>
-                        </div>
-                    )}
+                    {customer && customer.customerId.length == 0 && <CustomerInfo mode="Create" />}
                 </div>
             </Modal>
         </div>

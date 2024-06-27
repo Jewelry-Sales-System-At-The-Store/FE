@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import jewelryApi from '../../services/jewelryApi';
-import { Skeleton, Spin } from 'antd';
+import { Skeleton } from 'antd';
 
 const ProverCategory = () => {
     //-----------------------handle call get Jewelries type ---------------------------//
