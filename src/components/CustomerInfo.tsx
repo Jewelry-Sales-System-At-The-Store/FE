@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import customerApi from '../services/customerApi';
 import { useDispatch } from 'react-redux';
 import { setCustomer } from '../slices/customerSlice';
+import { Mode } from '../types/base.type';
 
-type Mode = 'Update' | 'Create' | 'View';
 interface CustomerInfoProps {
     mode: Mode;
     value?: Customer;
@@ -44,7 +44,6 @@ const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
     //------------------------- end call api add new customer -----------------------------//
 
     const onSubmit = (values: CreateCustomerRequest) => {
-        console.log(values);
         setnewCustomer(values);
         AddCustomer(values);
     };
@@ -58,27 +57,26 @@ const CustomerInfo = ({ mode, value }: CustomerInfoProps) => {
                             <b className="font-medium">Họ và tên:</b>
                         </p>
                         <p className="text-base font-bold capitalize text-primary-TEXT">
-                            Nguyễn Thành long
+                            {value?.fullName}
                         </p>
                     </div>
                     <div className="flex justify-between gap-2">
                         <p className="text-base">
                             <b className="font-medium">Số điện thoại:</b>
                         </p>
-                        <p className="text-base font-bold text-secondary-DARK">0389142366</p>
+                        <p className="text-base font-bold text-secondary-DARK">{value?.phone}</p>
                     </div>
                     <div className="flex justify-between gap-2">
                         <p className="text-base">
                             <b className="font-medium">Điểm tích lũy:</b>
                         </p>
-                        <p className="text-base font-bold text-red-400">10 Points</p>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                        <p className="text-base">
-                            <b className="font-medium">Địa chỉ: </b>
-                            Hẻm 68, lê văn việt, Quận 9 , tp. Hồ chí minh inosa fksanjf slfknsa
-                            dfklsandf
+                        <p className="text-base font-bold text-red-400">
+                            {value?.point ?? 0} Points
                         </p>
+                    </div>
+                    <div className="flex justify-between gap-2 text-base">
+                        <b className="font-medium">Địa chỉ: </b>
+                        <p>{value?.address}</p>
                     </div>
                 </div>
             )}

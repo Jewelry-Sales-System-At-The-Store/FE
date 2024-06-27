@@ -32,11 +32,14 @@ export const customerState = createSlice({
         setShowCustomerModal: (state, action: PayloadAction<boolean>) => {
             state.showCustomerModal = action.payload;
         },
+        clearCustomer: (state) => {
+            state.customer = initCustomer;
+        },
     },
 });
 
 export const selectCustomer = (state: RootState) => state.customer;
 
-export const { setCustomer, setShowCustomerModal } = customerState.actions;
+export const { setCustomer, setShowCustomerModal, clearCustomer } = customerState.actions;
 
 export default customerState.reducer;

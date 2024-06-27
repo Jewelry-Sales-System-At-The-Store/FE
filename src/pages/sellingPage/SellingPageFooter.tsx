@@ -2,13 +2,14 @@ import MenuItem from '../../components/MenuItem';
 import { FaFolderOpen } from 'react-icons/fa6';
 import { IoIosSave } from 'react-icons/io';
 import { IoIosPrint } from 'react-icons/io';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import billApi from '../../services/billsApi';
 import { useEffect } from 'react';
 import { RootState } from '../../store';
 import { CreateBillRequest } from '../../types/bill.type';
 import { PiUserGearFill } from 'react-icons/pi';
 import InputCustomerModal from '../../components/InputCustomerModal';
+import { setShowCustomerModal } from '../../slices/customerSlice';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
 type Options = 'saveBill' | 'printBill' | 'customerInfo';
@@ -41,7 +42,7 @@ const rightOptions: RightOptions[] = [
 ];
 
 const SellingPageFooter = () => {
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const tempBill = useSelector((state: RootState) => state.jewelry.bill);
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const user = useSelector((state: RootState) => state.auth.user);
@@ -96,6 +97,7 @@ const SellingPageFooter = () => {
             case 'printBill':
                 break;
             case 'customerInfo':
+                dispatch(setShowCustomerModal(true));
                 break;
         }
     };
@@ -128,7 +130,7 @@ const SellingPageFooter = () => {
                     />
                 ))}
             </div>
-            {/* <InputCustomerModal title="Thông tin khách hàng" /> */}
+            <InputCustomerModal title="Thông tin khách hàng" />
         </div>
     );
 };

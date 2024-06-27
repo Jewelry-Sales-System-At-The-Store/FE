@@ -11,3 +11,5 @@ export interface PaggingRequest<T> {
     pageSize: number;
     data: T;
 }
+
+export type Mode = 'Update' | 'Create' | 'View';
