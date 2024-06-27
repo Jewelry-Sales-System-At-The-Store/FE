@@ -128,7 +128,7 @@ const SellingPageFooter = () => {
                     />
                 ))}
             </div>
-            <InputCustomerModal title="Thông tin khách hàng" />
+            {/* <InputCustomerModal title="Thông tin khách hàng" /> */}
         </div>
     );
 };

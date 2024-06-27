@@ -9,9 +9,12 @@ export const jewelryApi = createApi({
     tagTypes: ['jewelry'],
     refetchOnMountOrArgChange: true,
     endpoints: (builder) => ({
-        getJewelries: builder.query<PaggingRespone<Jewelry>, PaggingRequest<null>>({
+        getJewelries: builder.query<
+            PaggingRespone<Jewelry>,
+            PaggingRequest<{ jewelryTypeId: string }>
+        >({
             query: (para) => ({
-                url: `api/Jewelry/GetJewelries?pageNumber=${para.pageNumber}&pageSize=${para.pageSize}`,
+                url: `api/Jewelry/GetJewelriesByType?jewelryTypeId=${para.data.jewelryTypeId}&pageNumber=${para.pageNumber}&pageSize=${para.pageSize}`,
                 method: 'GET',
             }),
         }),

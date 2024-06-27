@@ -31,8 +31,7 @@ const tabs: Tab[] = [
 
 const ItemList = () => {
     const [selectedTab, setselectedTab] = useState<SellingHeaderTab>('Jewelrys');
-    const [selectedSubTab, setselectedSubTab] = useState(1);
-
+    const [selectedType, setselectedType] = useState('');
     const dispatch = useDispatch();
     const [itemList, setitemList] = useState<PaggingRespone<Jewelry>>({
         data: [],
@@ -46,7 +45,7 @@ const ItemList = () => {
     const { data, isSuccess, isLoading, isError, error } = jewelryApi.useGetJewelriesQuery({
         pageNumber: itemList.pageNumber,
         pageSize: itemList.pageSize,
-        data: null,
+        data: { jewelryTypeId: selectedType },
     });
 
     useEffect(() => {
@@ -91,16 +90,30 @@ const ItemList = () => {
                 {selectedTab == tabs[1].id && (
                     <div className="flex h-full gap-2 text-white">
                         <div
-                            onClick={() => setselectedSubTab(1)}
+                            onClick={() => setselectedType('')}
                             className={
                                 'flex h-full cursor-pointer items-center px-2 hover:bg-black/10 ' +
-                                (selectedSubTab == 1 ? '!bg-white text-black' : '')
+                                (selectedType.length == 0 ? '!bg-white text-black' : '')
                             }
                         >
                             <p className="select-none">Tất cả hàng hóa</p>
                         </div>
-                        <Popover content={<ProverCategory />} showArrow trigger="click">
-                            <div className="flex h-full cursor-pointer items-center gap-1 px-2 hover:bg-black/10">
+                        <Popover
+                            content={
+                                <ProverCategory
+                                    onSelect={(id) => setselectedType(id)}
+                                    selectedId={selectedType}
+                                />
+                            }
+                            showArrow
+                            trigger="click"
+                        >
+                            <div
+                                className={
+                                    'flex h-full cursor-pointer items-center gap-1 px-2 hover:bg-black/10 ' +
+                                    (selectedType.length > 0 ? '!bg-white text-black' : '')
+                                }
+                            >
                                 <FaTags />
                                 <p className="select-none">Nhóm hàng</p>
                                 <FaCaretDown />
