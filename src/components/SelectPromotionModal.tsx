@@ -82,7 +82,7 @@ const SelectPromotionModal = ({ childen, title }: SelectPromotionModalProps) => 
                 className="min-w-fit"
             >
                 {!isLoading && data && (
-                    <div className="grid grid-cols-3 gap-3 p-4">
+                    <div className="grid grid-cols-5 gap-3 p-4">
                         {data.map((item) => (
                             <PromotionItem item={item} />
                         ))}

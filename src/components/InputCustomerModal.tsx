@@ -60,6 +60,7 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
                         padding: 0,
                     },
                 }}
+                onCancel={() => dispatch(setShowCustomerModal(false))}
                 className="min-w-fit"
             >
                 <div className="w-[400px] max-w-[400px] p-6">
@@ -82,8 +83,6 @@ const InputCustomerModal = ({ title }: InputCustomerModalProps) => {
                                         style={{ borderRadius: 2 }}
                                         className="border-green-OUTLINE"
                                         placeholder="Nhập số điện thoại"
-                                        // onChange={(e) => setsearchPhone(e.currentTarget.value)}
-                                        // value={searchPhone}
                                         type="number"
                                         onFocus={() => setisNotFount(false)}
                                     />

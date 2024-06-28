@@ -9,7 +9,8 @@ import { RootState } from '../../store';
 import { CreateBillRequest } from '../../types/bill.type';
 import { PiUserGearFill } from 'react-icons/pi';
 import InputCustomerModal from '../../components/InputCustomerModal';
-import { setShowCustomerModal } from '../../slices/customerSlice';
+import { clearCustomer, setShowCustomerModal } from '../../slices/customerSlice';
+import { clearBill } from '../../slices/jewelrySlice';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
 type Options = 'saveBill' | 'printBill' | 'customerInfo';
@@ -46,6 +47,7 @@ const SellingPageFooter = () => {
     const tempBill = useSelector((state: RootState) => state.jewelry.bill);
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const user = useSelector((state: RootState) => state.auth.user);
+    const customerId = useSelector((state: RootState) => state.customer.customer.customerId);
     //------------------------ handle call api create bills ----------------------//
 
     const [CreateBill, { isLoading, isSuccess, data, isError, error }] =
@@ -53,6 +55,8 @@ const SellingPageFooter = () => {
 
     useEffect(() => {
         if (isSuccess && data) {
+            dispatch(clearCustomer());
+            dispatch(clearBill());
         }
     }, [isSuccess]);
 
@@ -85,14 +89,20 @@ const SellingPageFooter = () => {
     const handleBtnClick = (options: Options) => {
         switch (options) {
             case 'saveBill':
-                const d: CreateBillRequest = {
-                    ...tempBill,
-                    userId: user.userId,
-                    counterId: user.counterNumber + '',
-                    jewelries: cart.map((cart) => ({ jewelryId: cart.id })),
-                };
-                console.log(d);
-                CreateBill(d);
+                if (customerId.length > 0) {
+                    const d: CreateBillRequest = {
+                        ...tempBill,
+                        userId: user.userId,
+                        counterId: '1',
+                        jewelries: cart.map((cart) => ({ jewelryId: cart.id })),
+                        customerId: customerId,
+                    };
+                    console.log(d);
+                    CreateBill(d);
+                } else {
+                    dispatch(setShowCustomerModal(true));
+                }
+
                 break;
             case 'printBill':
                 break;
@@ -103,32 +113,34 @@ const SellingPageFooter = () => {
     };
 
     return (
-        <div className="flex justify-between bg-white px-2 py-1">
-            <div>
-                <MenuItem
-                    title="Mở rộng"
-                    preIcon={<FaFolderOpen size={24} />}
-                    containerStyle="bg-secondary-DARK text-white rounded-md hover:bg-gray-200 hover:text-[#333]"
-                    orientation="Vertical"
-                    expendDirection="UP"
-                    containerSelectedStyle=""
-                    submenu={<div />}
-                />
-            </div>
-            <div className="flex gap-2">
-                {rightOptions.map((opt, index) => (
+        <div>
+            <div className="flex justify-between bg-white px-2 py-1">
+                <div>
                     <MenuItem
-                        key={index}
-                        title={opt.title}
-                        preIcon={opt.icon}
+                        title="Mở rộng"
+                        preIcon={<FaFolderOpen size={24} />}
+                        containerStyle="bg-secondary-DARK text-white rounded-md hover:bg-gray-200 hover:text-[#333]"
                         orientation="Vertical"
-                        onItemClick={() => handleBtnClick(opt.id)}
-                        containerStyle={
-                            ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
-                            opt.color
-                        }
+                        expendDirection="UP"
+                        containerSelectedStyle=""
+                        submenu={<div />}
                     />
-                ))}
+                </div>
+                <div className="flex gap-2">
+                    {rightOptions.map((opt, index) => (
+                        <MenuItem
+                            key={index}
+                            title={opt.title}
+                            preIcon={opt.icon}
+                            orientation="Vertical"
+                            onItemClick={() => handleBtnClick(opt.id)}
+                            containerStyle={
+                                ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
+                                opt.color
+                            }
+                        />
+                    ))}
+                </div>
             </div>
             <InputCustomerModal title="Thông tin khách hàng" />
         </div>

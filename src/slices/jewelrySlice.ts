@@ -106,6 +106,8 @@ export const jewelrySlice = createSlice({
         clearBill(state) {
             state.bill = initBill;
             state.promotionsSelected = [];
+            state.cart = [];
+            state.tempCart = initTempCart;
         },
         callMoney,
         toggelPromotion(state, action: PayloadAction<TermPromotion>) {
@@ -142,6 +144,7 @@ export const {
     clearPromotionSelected,
     savePromotionSelected,
     loadPromotionSelected,
+    clearBill,
 } = jewelrySlice.actions;
 
 export default jewelrySlice.reducer;
