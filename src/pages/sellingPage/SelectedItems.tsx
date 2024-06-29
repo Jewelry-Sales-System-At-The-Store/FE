@@ -1,11 +1,10 @@
-import { Button, Input, Popconfirm, Table, TableProps, Tooltip } from 'antd';
+import { Button, Popconfirm, Table, TableProps, Tooltip } from 'antd';
 import { FaClock } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa6';
 import { CartItem } from '../../types/cart.type';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import GetNumberModel from '../../components/GetNumberModel';
-import { removeFromCart, setQuantity } from '../../slices/jewelrySlice';
+import { removeFromCart } from '../../slices/jewelrySlice';
 import { formatNumber } from '../../utils/formater';
 
 import { MdDelete } from 'react-icons/md';
@@ -43,27 +42,6 @@ const SelectedItems = () => {
             ),
         },
         {
-            title: 'S.L',
-            dataIndex: 'quantity',
-            key: 'quantity',
-            render: (_, { quantity, id }) => (
-                <GetNumberModel
-                    title="Điều chỉnh số lượng"
-                    onOK={(num) => {
-                        dispatch(setQuantity({ cardId: id, quantity: num }));
-                    }}
-                    value={quantity}
-                    numberType="Integer"
-                    childen={
-                        <Input
-                            className="max-w-[100px] rounded-sm border-green-OUTLINE text-right"
-                            value={formatNumber(quantity + '')}
-                        />
-                    }
-                />
-            ),
-        },
-        {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
@@ -84,9 +62,9 @@ const SelectedItems = () => {
         {
             title: 'T.Tiền',
             key: 'totalPrice',
-            render: (_, { quantity, price }) => (
+            render: (_, { price }) => (
                 <div className="h-full rounded-sm border-[1px] border-[#ccc] px-3 py-1">
-                    <p>{formatNumber(quantity * price + '')}</p>
+                    <p>{formatNumber(price + '')}</p>
                 </div>
             ),
         },

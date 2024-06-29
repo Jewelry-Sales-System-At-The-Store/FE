@@ -84,7 +84,7 @@ const SelectPromotionModal = ({ childen, title }: SelectPromotionModalProps) => 
                 {!isLoading && data && (
                     <div className="grid grid-cols-5 gap-3 p-4">
                         {data.map((item) => (
-                            <PromotionItem item={item} />
+                            <PromotionItem key={item.promotionId} item={item} />
                         ))}
                     </div>
                 )}

@@ -10,7 +10,7 @@ import { PaggingRespone } from '../../types/base.type';
 import { FaChevronCircleLeft } from 'react-icons/fa';
 import { FaChevronCircleRight } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../slices/jewelrySlice';
+import { toggleCart } from '../../slices/jewelrySlice';
 
 type SellingHeaderTab = 'Counters' | 'Jewelrys';
 interface Tab {
@@ -128,7 +128,7 @@ const ItemList = () => {
                     data &&
                     itemList.data.map((item, index) => (
                         <Item
-                            onItemClick={() => dispatch(addToCart({ item, quantity: 1 }))}
+                            onItemClick={() => dispatch(toggleCart(item))}
                             item={item}
                             key={index}
                         />

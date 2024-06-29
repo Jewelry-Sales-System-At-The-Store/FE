@@ -56,7 +56,7 @@ const initialState: JewelryState = {
 
 const callMoney = (state: JewelryState) => {
     let total = 0;
-    state.cart.forEach((item) => (total += item.price * item.quantity));
+    state.cart.forEach((item) => (total += item.price));
     state.tempCart.totalPrice = total;
     state.tempCart.pay = total - state.tempCart.discount;
     let totalPromotion = 0;
@@ -68,28 +68,17 @@ export const jewelrySlice = createSlice({
     name: 'jewelry',
     initialState,
     reducers: {
-        setQuantity(state, action: PayloadAction<{ cardId: string; quantity: number }>) {
-            const existingItem = state.cart.find((item) => item.id === action.payload.cardId);
-            if (existingItem) {
-                existingItem.quantity = action.payload.quantity;
-                callMoney(state);
-            }
-        },
-        addToCart(state, action: PayloadAction<{ item: Jewelry; quantity: number }>) {
-            const existingItem = state.cart.find(
-                (item) => item.id === action.payload.item.jewelryId,
-            );
-            if (existingItem) {
-                existingItem.quantity += action.payload.quantity;
+        toggleCart(state, action: PayloadAction<Jewelry>) {
+            const foundIndex = state.cart.findIndex((i) => i.id == action.payload.jewelryId);
+            if (foundIndex != -1) {
+                state.cart.splice(foundIndex, 1);
             } else {
-                const { name, jewelryId, totalPrice } = action.payload.item;
+                const { name, jewelryId, totalPrice } = action.payload;
                 const newCartItem: CartItem = {
                     id: jewelryId,
                     name: name,
                     price: totalPrice,
-                    quantity: 1,
                     sale: 0,
-                    user: '',
                 };
                 state.cart.push(newCartItem);
             }
@@ -136,10 +125,9 @@ export const jewelrySlice = createSlice({
 export const selectAuth = (state: RootState) => state.jewelry;
 
 export const {
-    addToCart,
+    toggleCart,
     clearCart,
     removeFromCart,
-    setQuantity,
     toggelPromotion,
     clearPromotionSelected,
     savePromotionSelected,

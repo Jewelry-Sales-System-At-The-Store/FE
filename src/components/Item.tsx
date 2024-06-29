@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import { Jewelry } from '../types/jewelry.type';
 import { FaCheckCircle } from 'react-icons/fa';
 import { formatNumber } from '../utils/formater';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 interface ItemProps {
     item: Jewelry;
@@ -9,15 +10,17 @@ interface ItemProps {
 }
 
 const Item = ({ item, onItemClick }: ItemProps) => {
-    const [showIcon, setshowIcon] = useState(false);
+    const selectedItems = useSelector((state: RootState) => state.jewelry.cart);
+    const isSelected = selectedItems.findIndex((c) => c.id == item.jewelryId) != -1;
     return (
         <div
             onClick={onItemClick}
-            onMouseEnter={() => setshowIcon(true)}
-            onMouseLeave={() => setshowIcon(false)}
-            className="relative flex h-[100px] max-h-[100px] min-w-[190px] max-w-[190px] cursor-pointer select-none items-center gap-2 rounded-md border-[1px] border-[#ccc] p-2 hover:bg-gray"
+            className={
+                'relative flex h-[100px] max-h-[100px] min-w-[190px] max-w-[190px] cursor-pointer select-none items-center gap-2 rounded-md border-[1px] border-[#ccc] p-2 hover:bg-gray ' +
+                (isSelected ? 'border-secondary' : '')
+            }
         >
-            {showIcon && (
+            {isSelected && (
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white">
                     <FaCheckCircle size={35} className="text-primary" />
                 </div>

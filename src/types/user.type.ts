@@ -8,6 +8,7 @@ export interface User {
     phoneNumber: string;
     email: string;
     status: boolean;
+    counterId: string;
 }
 
 export interface Role {
