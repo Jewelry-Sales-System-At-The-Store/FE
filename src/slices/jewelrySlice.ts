@@ -29,6 +29,7 @@ export interface JewelryState {
     bill: TempBill;
     tempCart: TempCart;
     promotionsSelected: TermPromotion[];
+    search: string;
 }
 
 const initBill: TempBill = {
@@ -52,6 +53,7 @@ const initialState: JewelryState = {
     bill: initBill,
     tempCart: initTempCart,
     promotionsSelected: [],
+    search: '',
 };
 
 const callMoney = (state: JewelryState) => {
@@ -73,11 +75,12 @@ export const jewelrySlice = createSlice({
             if (foundIndex != -1) {
                 state.cart.splice(foundIndex, 1);
             } else {
-                const { name, jewelryId, totalPrice } = action.payload;
+                const { name, jewelryId, totalPrice, type } = action.payload;
                 const newCartItem: CartItem = {
                     id: jewelryId,
                     name: name,
                     price: totalPrice,
+                    typeName: type,
                     sale: 0,
                 };
                 state.cart.push(newCartItem);
@@ -119,6 +122,9 @@ export const jewelrySlice = createSlice({
         loadPromotionSelected(state) {
             state.promotionsSelected = state.bill.promotions;
         },
+        setSearch(state, action: PayloadAction<string>) {
+            state.search = action.payload;
+        },
     },
 });
 
@@ -133,6 +139,7 @@ export const {
     savePromotionSelected,
     loadPromotionSelected,
     clearBill,
+    setSearch,
 } = jewelrySlice.actions;
 
 export default jewelrySlice.reducer;

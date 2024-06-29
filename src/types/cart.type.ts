@@ -3,4 +3,5 @@ export interface CartItem {
     name: string;
     price: number;
     sale: number;
+    typeName: string;
 }

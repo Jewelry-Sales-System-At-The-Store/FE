@@ -11,10 +11,10 @@ export const jewelryApi = createApi({
     endpoints: (builder) => ({
         getJewelries: builder.query<
             PaggingRespone<Jewelry>,
-            PaggingRequest<{ jewelryTypeId: string }>
+            PaggingRequest<{ jewelryTypeId: string; name: string }>
         >({
             query: (para) => ({
-                url: `api/Jewelry/GetJewelriesByType?jewelryTypeId=${para.data.jewelryTypeId}&pageNumber=${para.pageNumber}&pageSize=${para.pageSize}`,
+                url: `api/Jewelry/GetJewelries?pageNumber=${para.pageNumber}&pageSize=${para.pageSize}&name=${para.data.name}&typeId=${para.data.jewelryTypeId}`,
                 method: 'GET',
             }),
         }),

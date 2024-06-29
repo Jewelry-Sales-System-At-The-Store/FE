@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Table, TableProps, Tooltip } from 'antd';
+import { Button, Popconfirm, Table, TableProps, Tag, Tooltip } from 'antd';
 import { FaClock } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa6';
 import { CartItem } from '../../types/cart.type';
@@ -30,6 +30,12 @@ const SelectedItems = () => {
 
     const columns: TableProps<CartItem>['columns'] = [
         {
+            title: 'STT',
+            dataIndex: 'index',
+            key: 'index',
+            render: (_, __, index) => index + 1,
+        },
+        {
             title: 'Hàng hóa',
             dataIndex: 'name',
             key: 'name',
@@ -42,32 +48,19 @@ const SelectedItems = () => {
             ),
         },
         {
+            title: 'Loại',
+            key: 'typeName',
+            render: (_, { typeName }) => <Tag color="cyan">{typeName}</Tag>,
+        },
+        {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
             render: (_, { price }) => (
-                <div className="h-full rounded-sm border-[1px] border-[#ccc] px-3 py-1">
-                    <p>{formatNumber(price + '')}</p>
-                </div>
+                <p className="text-sm font-medium text-red-400">{formatNumber(price + '')}</p>
             ),
         },
-        // {
-        //     title: 'Giảm',
-        //     key: 'sale',
-        //     dataIndex: 'sale',
-        //     render: (_, { sale }) => (
-        //         <Input className="max-w-[100px]" value={sale.toPrecision(2)} />
-        //     ),
-        // },
-        {
-            title: 'T.Tiền',
-            key: 'totalPrice',
-            render: (_, { price }) => (
-                <div className="h-full rounded-sm border-[1px] border-[#ccc] px-3 py-1">
-                    <p>{formatNumber(price + '')}</p>
-                </div>
-            ),
-        },
+
         {
             title: 'Action',
             key: 'action',
@@ -115,7 +108,11 @@ const SelectedItems = () => {
                 </div>
             </div>
             <div className="flex-1">
-                <Table columns={columns} dataSource={cart} />
+                <Table
+                    columns={columns}
+                    rowClassName={(_, index) => (index % 2 == 0 ? 'bg-[#f1faff]' : '')}
+                    dataSource={cart}
+                />
             </div>
             <div className="grid grid-cols-2 p-2">
                 <div className="flex items-center justify-end gap-1">

@@ -1,5 +1,5 @@
-import { Input, Popover, Spin } from 'antd';
-import { useEffect, useState } from 'react';
+import { Empty, Input, Popover, Spin } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 import { FaTags } from 'react-icons/fa';
 import { FaCaretDown } from 'react-icons/fa';
 import ProverCategory from './ProverCategory';
@@ -9,8 +9,10 @@ import { Jewelry } from '../../types/jewelry.type';
 import { PaggingRespone } from '../../types/base.type';
 import { FaChevronCircleLeft } from 'react-icons/fa';
 import { FaChevronCircleRight } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
-import { toggleCart } from '../../slices/jewelrySlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearch, toggleCart } from '../../slices/jewelrySlice';
+import { RootState } from '../../store';
+import { debounce, divide } from 'lodash';
 
 type SellingHeaderTab = 'Counters' | 'Jewelrys';
 interface Tab {
@@ -40,12 +42,13 @@ const ItemList = () => {
         totalPage: 0,
         totalRecord: 0,
     });
-
+    const search = useSelector((state: RootState) => state.jewelry.search);
+    const [searchText, setSearchText] = useState('');
     //-----------------------handle call get Jewelries ---------------------------//
     const { data, isSuccess, isLoading, isError, error } = jewelryApi.useGetJewelriesQuery({
         pageNumber: itemList.pageNumber,
         pageSize: itemList.pageSize,
-        data: { jewelryTypeId: selectedType },
+        data: { jewelryTypeId: selectedType, name: search },
     });
 
     useEffect(() => {
@@ -61,9 +64,18 @@ const ItemList = () => {
     }, [isError]);
 
     //----------------------- end handle call get Jewelries ---------------------------//
-
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            dispatch(setSearch(value));
+        }, 500),
+        [],
+    );
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchText(e.currentTarget.value);
+        debouncedSearch(e.currentTarget.value);
+    };
     return (
-        <div className="relative h-full">
+        <div className="relative flex h-full flex-col">
             <div className="flex items-center">
                 <div className="flex flex-1">
                     {tabs.map((t) => (
@@ -83,6 +95,8 @@ const ItemList = () => {
                     <Input
                         style={{ borderRadius: 0, borderColor: '#5DA19F' }}
                         placeholder="Nhập mã hàng hoặc tên hàng để tìm kiếm"
+                        value={searchText}
+                        onChange={handleChange}
                     />
                 </div>
             </div>
@@ -122,7 +136,7 @@ const ItemList = () => {
                     </div>
                 )}
             </div>
-            <div className="flex flex-wrap gap-1 p-2 pr-4">
+            <div className="flex flex-1 flex-wrap gap-1 p-2 pr-4">
                 {/* display items */}
                 {!isLoading &&
                     data &&
@@ -133,6 +147,12 @@ const ItemList = () => {
                             key={index}
                         />
                     ))}
+
+                {!isLoading && itemList.data.length == 0 && (
+                    <div className="m-auto">
+                        <Empty description="Không tìm thấy sản phẩm nào." />
+                    </div>
+                )}
                 {isLoading && (
                     <div className="flex flex-1 items-center justify-center">
                         <Spin size="large" />
