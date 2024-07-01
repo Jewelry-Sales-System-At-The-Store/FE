@@ -64,7 +64,7 @@ const LoginPage = () => {
         if (isGetUserSuccess && userData) {
             console.log(userData);
             dispatch(setUser(userData));
-            navigate('/manager/');
+            navigate('/manager/selling');
         }
     }, [isGetUserSuccess]);
 

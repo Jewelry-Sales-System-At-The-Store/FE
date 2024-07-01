@@ -24,8 +24,8 @@ const publicRoutes: RouteProps[] = [
 ];
 
 const managerRoutes: RouteProps[] = [
-    { path: '/manager/', component: SellingPage, layout: DefaultManagerLayout },
-    { path: '/manager/gold-price', component: GoldPricePage, layout: DefaultManagerLayout}
+    { path: '/manager/selling', component: SellingPage, layout: DefaultManagerLayout },
+    { path: '/manager/gold-price', component: GoldPricePage, layout: DefaultManagerLayout },
 ];
 
 export { publicRoutes, managerRoutes };

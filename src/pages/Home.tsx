@@ -7,7 +7,7 @@ const Home = () => {
     useEffect(() => {
         navigate('/login');
     }, [navigate]);
-    return null;
+    return <div></div>;
 };
 
 export default Home;
