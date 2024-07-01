@@ -1,3 +1,5 @@
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 
 export type Direction = 'UP' | 'DOWN';
@@ -14,6 +16,7 @@ interface MenuItemProps {
     containerStyle?: string;
     containerSelectedStyle?: string;
     textStyle?: string;
+    isLoading?: boolean;
 }
 const MenuItem = ({
     title,
@@ -26,7 +29,9 @@ const MenuItem = ({
     containerStyle = '',
     containerSelectedStyle = '',
     textStyle = '',
+    isLoading,
 }: MenuItemProps) => {
+    console.log(isLoading);
     return (
         <div
             className={
@@ -37,7 +42,14 @@ const MenuItem = ({
             }
             onClick={onItemClick}
         >
-            {preIcon}
+            {isLoading ? (
+                <Spin
+                    className="text-white"
+                    indicator={<LoadingOutlined color="white" style={{ fontSize: 24 }} spin />}
+                />
+            ) : (
+                preIcon
+            )}
             <p className={textStyle}>{title}</p>
             {submenu && (expendDirection == 'DOWN' ? <FaAngleDown /> : <FaAngleUp />)}
         </div>

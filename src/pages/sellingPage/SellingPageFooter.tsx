@@ -11,6 +11,8 @@ import { PiUserGearFill } from 'react-icons/pi';
 import InputCustomerModal from '../../components/InputCustomerModal';
 import { clearCustomer, setShowCustomerModal } from '../../slices/customerSlice';
 import { clearBill } from '../../slices/jewelrySlice';
+import { Button, Result } from 'antd';
+import CustomModel from '../../components/CustomModel';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
 type Options = 'saveBill' | 'printBill' | 'customerInfo';
@@ -127,22 +129,69 @@ const SellingPageFooter = () => {
                     />
                 </div>
                 <div className="flex gap-2">
-                    {rightOptions.map((opt, index) => (
-                        <MenuItem
-                            key={index}
-                            title={opt.title}
-                            preIcon={opt.icon}
-                            orientation="Vertical"
-                            onItemClick={() => handleBtnClick(opt.id)}
-                            containerStyle={
-                                ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
-                                opt.color
-                            }
-                        />
-                    ))}
+                    <MenuItem
+                        key={rightOptions[0].id}
+                        title={rightOptions[0].title}
+                        preIcon={rightOptions[0].icon}
+                        orientation="Vertical"
+                        onItemClick={() => handleBtnClick(rightOptions[0].id)}
+                        containerStyle={
+                            ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
+                            rightOptions[0].color
+                        }
+                    />
+                    <MenuItem
+                        key={rightOptions[1].id}
+                        title={rightOptions[1].title}
+                        preIcon={rightOptions[1].icon}
+                        orientation="Vertical"
+                        onItemClick={() => handleBtnClick(rightOptions[1].id)}
+                        isLoading={isLoading}
+                        containerStyle={
+                            ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
+                            rightOptions[1].color
+                        }
+                    />
+                    <MenuItem
+                        key={rightOptions[2].id}
+                        title={rightOptions[2].title}
+                        preIcon={rightOptions[2].icon}
+                        orientation="Vertical"
+                        onItemClick={() => handleBtnClick(rightOptions[2].id)}
+                        containerStyle={
+                            ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
+                            rightOptions[2].color
+                        }
+                    />
                 </div>
             </div>
             <InputCustomerModal title="Thông tin khách hàng" />
+            {/* <CustomModel
+                open={true}
+                body={
+                    <Result
+                        status="success"
+                        title="Lưu hóa đơn thành công!"
+                        subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+                        extra={[
+                            <div className="flex justify-center gap-4 p-2">
+                                <Button
+                                    type="primary"
+                                    className="rounded-sm bg-primary px-5 py-1 !text-white"
+                                >
+                                    In hóa đơn
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    className="rounded-sm bg-secondary px-5 py-1 !text-white"
+                                >
+                                    Tiếp tục thanh toán
+                                </Button>
+                            </div>,
+                        ]}
+                    />
+                }
+            /> */}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import HeaderMenuDropDown, { HeaderMenuDropDownProps } from './HeaderMenuDropDown';
+import HeaderMenuDropDown from './HeaderMenuDropDown';
 import { IoMdSettings } from 'react-icons/io';
 import { FaShoppingCart } from 'react-icons/fa';
 import { FaFileInvoiceDollar } from 'react-icons/fa';
@@ -7,7 +7,6 @@ import { FaDollarSign } from 'react-icons/fa6';
 import { MdHomeWork } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
 import { GiGoldBar } from 'react-icons/gi';
-import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
