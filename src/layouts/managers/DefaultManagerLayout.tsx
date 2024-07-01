@@ -6,6 +6,7 @@ import { FaGift } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa6';
 import { MdHomeWork } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
+import { GiGoldBar } from "react-icons/gi";
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -53,6 +54,11 @@ const menus: HeaderMenu[] = [
         title: 'Bán hàng',
         preIcon: <FaShoppingCart />,
         id: 7,
+    },
+    {
+        title: 'Già Vàng',
+        preIcon: <GiGoldBar />,
+        id: 8,
     },
 ];
 

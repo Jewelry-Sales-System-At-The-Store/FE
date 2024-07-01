@@ -1,6 +1,7 @@
 import DefaultLayout from '../layouts/DefaultLayout';
 import DefaultManagerLayout from '../layouts/managers/DefaultManagerLayout';
 import Home from '../pages/Home';
+import GoldPricePage from '../pages/goldPricePage/GoldPricePage';
 import LoginPage from '../pages/loginPage/LoginPage';
 import SellingPage from '../pages/sellingPage/SellingPage';
 
@@ -24,6 +25,7 @@ const publicRoutes: RouteProps[] = [
 
 const managerRoutes: RouteProps[] = [
     { path: '/manager/', component: SellingPage, layout: DefaultManagerLayout },
+    { path: '/manager/gold-price', component: GoldPricePage, layout: DefaultManagerLayout}
 ];
 
 export { publicRoutes, managerRoutes };
