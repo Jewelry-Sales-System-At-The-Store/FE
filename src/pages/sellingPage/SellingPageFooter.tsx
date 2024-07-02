@@ -4,7 +4,7 @@ import { IoIosSave } from 'react-icons/io';
 import { IoIosPrint } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import billApi from '../../services/billsApi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RootState } from '../../store';
 import { CreateBillRequest } from '../../types/bill.type';
 import { PiUserGearFill } from 'react-icons/pi';
@@ -13,6 +13,7 @@ import { clearCustomer, setShowCustomerModal } from '../../slices/customerSlice'
 import { clearBill } from '../../slices/jewelrySlice';
 import { Button, Result } from 'antd';
 import CustomModel from '../../components/CustomModel';
+import CheckoutModel from '../../components/CheckoutModel';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
 type Options = 'saveBill' | 'printBill' | 'customerInfo';
@@ -32,7 +33,7 @@ const rightOptions: RightOptions[] = [
     },
     {
         icon: <IoIosSave size={24} />,
-        title: 'Lưu hóa đơn',
+        title: 'Thanh toán',
         color: colors[0],
         id: 'saveBill',
     },
@@ -50,6 +51,7 @@ const SellingPageFooter = () => {
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const user = useSelector((state: RootState) => state.auth.user);
     const customerId = useSelector((state: RootState) => state.customer.customer.customerId);
+    const [showCheckout, setshowCheckout] = useState(false);
     //------------------------ handle call api create bills ----------------------//
 
     const [CreateBill, { isLoading, isSuccess, data, isError, error }] =
@@ -57,8 +59,8 @@ const SellingPageFooter = () => {
 
     useEffect(() => {
         if (isSuccess && data) {
-            dispatch(clearCustomer());
-            dispatch(clearBill());
+            // dispatch(clearCustomer());
+            // dispatch(clearBill());
         }
     }, [isSuccess]);
 
@@ -166,6 +168,7 @@ const SellingPageFooter = () => {
                 </div>
             </div>
             <InputCustomerModal title="Thông tin khách hàng" />
+            <CheckoutModel open={showCheckout} />
             {/* <CustomModel
                 open={true}
                 body={

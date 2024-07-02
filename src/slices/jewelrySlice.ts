@@ -30,6 +30,7 @@ export interface JewelryState {
     tempCart: TempCart;
     promotionsSelected: TermPromotion[];
     search: string;
+    selectedPaymentMethod: number;
 }
 
 const initBill: TempBill = {
@@ -54,6 +55,7 @@ const initialState: JewelryState = {
     tempCart: initTempCart,
     promotionsSelected: [],
     search: '',
+    selectedPaymentMethod: 0,
 };
 
 const callMoney = (state: JewelryState) => {
@@ -125,6 +127,9 @@ export const jewelrySlice = createSlice({
         setSearch(state, action: PayloadAction<string>) {
             state.search = action.payload;
         },
+        setPaymentMethod(state, action: PayloadAction<number>) {
+            state.selectedPaymentMethod = action.payload;
+        },
     },
 });
 
@@ -140,6 +145,7 @@ export const {
     loadPromotionSelected,
     clearBill,
     setSearch,
+    setPaymentMethod,
 } = jewelrySlice.actions;
 
 export default jewelrySlice.reducer;

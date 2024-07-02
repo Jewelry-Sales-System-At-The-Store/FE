@@ -1,6 +1,6 @@
 import { Button, Form, Input, Tag } from 'antd';
 import { CreateCustomerRequest, Customer } from '../types/customer.type';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import customerApi from '../services/customerApi';
 import { useDispatch } from 'react-redux';
 import { setCustomer } from '../slices/customerSlice';

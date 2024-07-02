@@ -1,16 +1,24 @@
 import { Modal } from 'antd';
-interface StatusModelProps {
+interface CustomerModelProps {
     open: boolean;
     body: React.ReactNode;
+    title?: string;
 }
 
-const StatusModel = ({ open, body }: StatusModelProps) => {
+const CustomerModel = ({ open, body, title }: CustomerModelProps) => {
     return (
         <Modal
             width={300}
             style={{ padding: 0 }}
             closable={false}
             footer={false}
+            title={
+                title ? (
+                    <div className="bg-primary p-2">
+                        <p className="w-full text-center text-lg uppercase text-white">{title}</p>
+                    </div>
+                ) : undefined
+            }
             open={open}
             styles={{
                 content: {
@@ -24,4 +32,4 @@ const StatusModel = ({ open, body }: StatusModelProps) => {
     );
 };
 
-export default StatusModel;
+export default CustomerModel;

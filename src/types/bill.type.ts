@@ -32,3 +32,17 @@ export interface CreateBillRequest {
     jewelries: JewelryID[];
     promotions: PromotionID[];
 }
+
+export interface CheckoutOfflineRequest {
+    billId: string;
+    cashAmount: number;
+}
+
+export interface CheckoutOfflineRespone {
+    billId: string;
+    customerName: string;
+    initialAmount: number;
+    cashBack: number;
+    finalAmount: number;
+    status: string;
+}
