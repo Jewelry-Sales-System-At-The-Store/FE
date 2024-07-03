@@ -1,15 +1,21 @@
 import CustomerModel from './CustomModel';
 import moneyPay from '../assets/moneyPay.jpg';
 import qrPay from '../assets/qrpay.jpg';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 import { FaArrowRight } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setPaymentMethod } from '../slices/jewelrySlice';
+import GetNumberModel from './GetNumberModel';
+import { formatNumber } from '../utils/formater';
+import { FaAngleLeft } from 'react-icons/fa6';
+import { MdOutlinePayments } from 'react-icons/md';
+import billApi from '../services/billsApi';
 interface CheckoutModelProps {
     open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const payList = [
     {
@@ -24,11 +30,20 @@ const payList = [
     },
 ];
 
-const CheckoutModel = ({ open }: CheckoutModelProps) => {
+const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
     const dispatch = useDispatch();
     const selectedPaymentMethod = useSelector(
         (state: RootState) => state.jewelry.selectedPaymentMethod,
     );
+    const totalMoney = useSelector((state: RootState) => state.jewelry.tempCart.pay);
+    const [cash, setcash] = useState(0);
+    const [selectMethod, setselectMethod] = useState(0);
+
+    //---------------------- call checkout offline api ----------------//
+
+    const [Checkout, { isLoading, isError, isSuccess, data }] =
+        billApi.useCheckoutOfflineMutation();
+
     return (
         <div>
             <CustomerModel
@@ -39,7 +54,7 @@ const CheckoutModel = ({ open }: CheckoutModelProps) => {
                 }
                 open={open}
                 body={
-                    <div className="px-10 py-6">
+                    <div className="relative px-10 py-6">
                         {selectedPaymentMethod == 0 && (
                             <div>
                                 <div className="flex gap-20">
@@ -48,9 +63,9 @@ const CheckoutModel = ({ open }: CheckoutModelProps) => {
                                             <img
                                                 src={i.src}
                                                 className="h-[150px] max-h-[150px] min-h-[150px] w-[150px] cursor-pointer rounded-full object-cover"
-                                                onClick={() => dispatch(setPaymentMethod(i.id))}
+                                                onClick={() => setselectMethod(i.id)}
                                             />
-                                            {selectedPaymentMethod === i.id && (
+                                            {selectMethod === i.id && (
                                                 <div className="absolute right-0 top-0 rounded-full bg-white">
                                                     <FaCheckCircle
                                                         size={30}
@@ -64,19 +79,96 @@ const CheckoutModel = ({ open }: CheckoutModelProps) => {
                                         </div>
                                     ))}
                                 </div>
+                                <div className="flex gap-4">
+                                    <Button
+                                        className="mt-8 rounded-sm"
+                                        type="default"
+                                        size="large"
+                                        onClick={() => setOpen(false)}
+                                    >
+                                        Huỷ
+                                    </Button>
+                                    <Button
+                                        className="mt-8 w-full rounded-sm bg-secondary hover:!bg-secondary-LIGHT"
+                                        type="primary"
+                                        disabled={selectMethod == 0}
+                                        onClick={() => dispatch(setPaymentMethod(selectMethod))}
+                                        size="large"
+                                        icon={<FaArrowRight />}
+                                        iconPosition="end"
+                                    >
+                                        Tiếp tục
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+                        {selectedPaymentMethod == 1 && (
+                            <div className="mt-6 flex max-w-[300px] flex-col gap-4">
                                 <Button
-                                    className="mt-8 w-full rounded-sm bg-secondary hover:!bg-secondary-LIGHT"
-                                    type="primary"
-                                    disabled={selectedPaymentMethod == 0}
-                                    size="large"
-                                    icon={<FaArrowRight />}
-                                    iconPosition="end"
+                                    type="link"
+                                    className="absolute -left-0 -top-0 text-primary-TEXT"
+                                    icon={<FaAngleLeft />}
+                                    onClick={() => dispatch(setPaymentMethod(0))}
                                 >
-                                    Tiếp tục
+                                    Quay lại
+                                </Button>
+                                <div>
+                                    <p className="text-base font-medium uppercase text-primary-TEXT">
+                                        Tổng tiền khách hàng phải trả
+                                    </p>
+                                    <p className="mt-1 text-base font-medium text-red-400">
+                                        {formatNumber(totalMoney + '') + ' VND'}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-1 text-base font-medium uppercase text-primary-TEXT">
+                                        Tiền nhận từ khách
+                                    </p>
+                                    <GetNumberModel
+                                        childen={
+                                            <Input
+                                                size="large"
+                                                className="rounded-sm border-green-OUTLINE"
+                                                value={formatNumber(cash + '') + ' VND'}
+                                            />
+                                        }
+                                        numberType="Float"
+                                        value={cash}
+                                        title="Tiền nhận từ khách hàng"
+                                        onOK={(n) => setcash(n)}
+                                    />
+                                    {cash < totalMoney && (
+                                        <p className="italic text-red-400">
+                                            * Số tiền nhận từ khách hàng phải lớn hơn hoặc bằng số
+                                            tiền phải trả!
+                                        </p>
+                                    )}
+                                </div>
+                                <Button
+                                    type="primary"
+                                    className="mt-6 w-full rounded-sm bg-secondary font-medium text-white hover:!bg-secondary-LIGHT"
+                                    htmlType="submit"
+                                    size="large"
+                                    loading={isLoading}
+                                    // onClick={}
+                                    icon={<MdOutlinePayments />}
+                                >
+                                    Thanh toán
                                 </Button>
                             </div>
                         )}
-                        {selectedPaymentMethod == 1 && <div></div>}
+                        {selectedPaymentMethod == 2 && (
+                            <div className="mt-6 flex flex-col gap-4">
+                                <Button
+                                    type="link"
+                                    className="absolute -left-0 -top-0 text-primary-TEXT"
+                                    icon={<FaAngleLeft />}
+                                    onClick={() => dispatch(setPaymentMethod(0))}
+                                >
+                                    Quay lại
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 }
             />

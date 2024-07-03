@@ -11,12 +11,12 @@ import { PiUserGearFill } from 'react-icons/pi';
 import InputCustomerModal from '../../components/InputCustomerModal';
 import { clearCustomer, setShowCustomerModal } from '../../slices/customerSlice';
 import { clearBill } from '../../slices/jewelrySlice';
-import { Button, Result } from 'antd';
+import { Button, Result, message } from 'antd';
 import CustomModel from '../../components/CustomModel';
 import CheckoutModel from '../../components/CheckoutModel';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
-type Options = 'saveBill' | 'printBill' | 'customerInfo';
+type Options = 'payment' | 'printBill' | 'customerInfo';
 interface RightOptions {
     icon: React.ReactNode;
     title: string;
@@ -35,7 +35,7 @@ const rightOptions: RightOptions[] = [
         icon: <IoIosSave size={24} />,
         title: 'Thanh toán',
         color: colors[0],
-        id: 'saveBill',
+        id: 'payment',
     },
     {
         icon: <IoIosPrint size={24} />,
@@ -51,7 +51,8 @@ const SellingPageFooter = () => {
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const user = useSelector((state: RootState) => state.auth.user);
     const customerId = useSelector((state: RootState) => state.customer.customer.customerId);
-    const [showCheckout, setshowCheckout] = useState(false);
+    const [showCheckout, setshowCheckout] = useState(true);
+    const [messageApi, contextHolder] = message.useMessage();
     //------------------------ handle call api create bills ----------------------//
 
     const [CreateBill, { isLoading, isSuccess, data, isError, error }] =
@@ -61,6 +62,7 @@ const SellingPageFooter = () => {
         if (isSuccess && data) {
             // dispatch(clearCustomer());
             // dispatch(clearBill());
+            setshowCheckout(true);
         }
     }, [isSuccess]);
 
@@ -72,37 +74,27 @@ const SellingPageFooter = () => {
 
     //------------------------ end handle call api create bills ----------------------//
 
-    // //------------------------ handle call api create bills ----------------------//
-
-    // const [CreateBill, { isLoading, isSuccess, data, isError, error }] =
-    //     billApi.useCreateBillMutation();
-
-    // useEffect(() => {
-    //     if (isSuccess && data) {
-    //     }
-    // }, [isSuccess]);
-
-    // useEffect(() => {
-    //     if (isError) {
-    //         console.log(error);
-    //     }
-    // }, [isError]);
-
-    // //------------------------ end handle call api create bills ----------------------//
-
     const handleBtnClick = (options: Options) => {
         switch (options) {
-            case 'saveBill':
+            case 'payment':
                 if (customerId.length > 0) {
-                    const d: CreateBillRequest = {
-                        ...tempBill,
-                        userId: user.userId,
-                        counterId: '1',
-                        jewelries: cart.map((cart) => ({ jewelryId: cart.id })),
-                        customerId: customerId,
-                    };
-                    console.log(d);
-                    CreateBill(d);
+                    if (tempBill.jewelries.length > 0) {
+                        const d: CreateBillRequest = {
+                            ...tempBill,
+                            userId: user.userId,
+                            counterId: '1',
+                            jewelries: cart.map((cart) => ({ jewelryId: cart.id })),
+                            customerId: customerId,
+                        };
+                        console.log(d);
+
+                        CreateBill(d);
+                    } else {
+                        messageApi.open({
+                            type: 'warning',
+                            content: 'Không có sản phẩm nào để thanh toán',
+                        });
+                    }
                 } else {
                     dispatch(setShowCustomerModal(true));
                 }
@@ -118,6 +110,7 @@ const SellingPageFooter = () => {
 
     return (
         <div>
+            {contextHolder}
             <div className="flex justify-between bg-white px-2 py-1">
                 <div>
                     <MenuItem
@@ -168,7 +161,7 @@ const SellingPageFooter = () => {
                 </div>
             </div>
             <InputCustomerModal title="Thông tin khách hàng" />
-            <CheckoutModel open={showCheckout} />
+            <CheckoutModel open={showCheckout} setOpen={setshowCheckout} />
             {/* <CustomModel
                 open={true}
                 body={

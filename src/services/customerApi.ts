@@ -13,12 +13,14 @@ export const customerApi = createApi({
                 method: 'POST',
                 body: body,
             }),
+            invalidatesTags: ['customer'],
         }),
         findCustomerByPhone: builder.query<Customer, string>({
             query: (para) => ({
                 url: `api/Customer/GetCustomerByPhone/${para}`,
                 method: 'GET',
             }),
+            providesTags: ['customer'],
         }),
     }),
     reducerPath: 'customerApi',
