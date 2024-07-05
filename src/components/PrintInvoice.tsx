@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import { RootState } from '../store';
 import { formatNumber, formatVNDate } from '../utils/formater';
+import logo from '../assets/logo.png';
 
 interface PrintInvoiceProps {
     isPrint: boolean;
@@ -31,11 +32,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                 <tr>
                                     <td className="w-full align-top">
                                         <div>
-                                            <img
-                                                src="https://menkoff.com/assets/brand-sample.png"
-                                                className="h-12"
-                                                alt="Logo"
-                                            />
+                                            <img src={logo} className="h-16" alt="Logo" />
                                         </div>
                                     </td>
                                     <td className="align-top">
@@ -48,7 +45,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                                                 <p className="whitespace-nowrap text-right text-slate-400">
                                                                     Date
                                                                 </p>
-                                                                <p className="text-main text-purple whitespace-nowrap text-right font-bold">
+                                                                <p className="text-main whitespace-nowrap text-right font-bold text-purple">
                                                                     {formatVNDate(
                                                                         new Date(bill.saleDate),
                                                                     )}
@@ -60,7 +57,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                                                 <p className="whitespace-nowrap text-right text-slate-400">
                                                                     Invoice #
                                                                 </p>
-                                                                <p className="text-main text-purple whitespace-nowrap text-right font-bold">
+                                                                <p className="text-main whitespace-nowrap text-right font-bold text-purple">
                                                                     {bill.billId}
                                                                 </p>
                                                             </div>
@@ -81,7 +78,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                 <tr>
                                     <td className="w-1/2 align-top">
                                         <div className="text-sm text-neutral-600">
-                                            <p className="font-bold">Supplier Company INC</p>
+                                            <p className="font-bold">Liceria & Co.</p>
                                             <p>Number: 23456789</p>
                                             <p>VAT: 23456789</p>
                                             <p>6622 Abshire Mills</p>
@@ -158,7 +155,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                                                         </div>
                                                                     </td>
                                                                     <td className="border-b p-3 text-right">
-                                                                        <div className="text-main text-purple whitespace-nowrap font-bold">
+                                                                        <div className="text-main whitespace-nowrap font-bold text-purple">
                                                                             {formatNumber(
                                                                                 bill.totalAmount.toFixed(
                                                                                     2,
@@ -174,7 +171,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                                                         </div>
                                                                     </td>
                                                                     <td className="p-3 text-right">
-                                                                        <div className="text-main text-purple whitespace-nowrap font-bold">
+                                                                        <div className="text-main whitespace-nowrap font-bold text-purple">
                                                                             {formatNumber(
                                                                                 (
                                                                                     bill.totalDiscount *
@@ -214,7 +211,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                     </div>
 
                     <div className="px-14 text-sm text-neutral-700">
-                        <p className="text-main text-purple font-bold">PAYMENT DETAILS</p>
+                        <p className="text-main font-bold text-purple">PAYMENT DETAILS</p>
                         <p>Banks of Banks</p>
                         <p>Bank/Sort Code: 1234567</p>
                         <p>Account Number: 123456678</p>
@@ -222,7 +219,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                     </div>
 
                     <div className="px-14 py-10 text-sm text-neutral-700">
-                        <p className="text-main text-purple font-bold">Notes</p>
+                        <p className="text-main font-bold text-purple">Notes</p>
                         <p className="italic">
                             Lorem ipsum is placeholder text commonly used in the graphic, print, and
                             publishing industries for previewing layouts and visual mockups.
@@ -230,7 +227,7 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                     </div>
 
                     <footer className="bg-slate-100 py-3 text-center text-xs text-[#525252]">
-                        <div>© 2024 Supplier Company INC. All rights reserved.</div>
+                        <div>© 2024 Liceria & Co. All rights reserved.</div>
                     </footer>
                 </div>
             </div>
