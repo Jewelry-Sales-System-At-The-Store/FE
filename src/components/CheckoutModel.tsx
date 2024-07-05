@@ -1,7 +1,7 @@
 import CustomerModel from './CustomModel';
 import moneyPay from '../assets/moneyPay.jpg';
 import qrPay from '../assets/qrpay.jpg';
-import { Button, Input } from 'antd';
+import { Button, Input, message } from 'antd';
 import { FaArrowRight } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
@@ -13,6 +13,7 @@ import { formatNumber } from '../utils/formater';
 import { FaAngleLeft } from 'react-icons/fa6';
 import { MdOutlinePayments } from 'react-icons/md';
 import billApi from '../services/billsApi';
+import { setCheckoutOffLineData, setIsShowBill } from '../slices/billSlice';
 interface CheckoutModelProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,7 +37,9 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
         (state: RootState) => state.jewelry.selectedPaymentMethod,
     );
     const totalMoney = useSelector((state: RootState) => state.jewelry.tempCart.pay);
+    const createBillResult = useSelector((state: RootState) => state.bill.showBill.bill);
     const [cash, setcash] = useState(0);
+    const [messageApi, contextHolder] = message.useMessage();
     const [selectMethod, setselectMethod] = useState(0);
 
     //---------------------- call checkout offline api ----------------//
@@ -44,8 +47,20 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
     const [Checkout, { isLoading, isError, isSuccess, data }] =
         billApi.useCheckoutOfflineMutation();
 
+    const handleCheckoutOffline = () => {
+        Checkout({ billId: createBillResult.billId, cashAmount: cash });
+    };
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(setCheckoutOffLineData(data));
+            dispatch(setIsShowBill(true));
+            messageApi.success('Thanh toán thành công!');
+            setOpen(false);
+        }
+    }, [isSuccess]);
     return (
         <div>
+            {contextHolder}
             <CustomerModel
                 title={
                     selectedPaymentMethod == 0
@@ -150,7 +165,7 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                     htmlType="submit"
                                     size="large"
                                     loading={isLoading}
-                                    // onClick={}
+                                    onClick={handleCheckoutOffline}
                                     icon={<MdOutlinePayments />}
                                 >
                                     Thanh toán

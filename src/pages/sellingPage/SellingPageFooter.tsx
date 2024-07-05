@@ -9,11 +9,11 @@ import { RootState } from '../../store';
 import { CreateBillRequest } from '../../types/bill.type';
 import { PiUserGearFill } from 'react-icons/pi';
 import InputCustomerModal from '../../components/InputCustomerModal';
-import { clearCustomer, setShowCustomerModal } from '../../slices/customerSlice';
-import { clearBill } from '../../slices/jewelrySlice';
-import { Button, Result, message } from 'antd';
-import CustomModel from '../../components/CustomModel';
+import { setShowCustomerModal } from '../../slices/customerSlice';
+import { message } from 'antd';
 import CheckoutModel from '../../components/CheckoutModel';
+import ShowBillModel from '../../components/ShowBillModel';
+import { setShowBill } from '../../slices/billSlice';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
 type Options = 'payment' | 'printBill' | 'customerInfo';
@@ -51,7 +51,7 @@ const SellingPageFooter = () => {
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const user = useSelector((state: RootState) => state.auth.user);
     const customerId = useSelector((state: RootState) => state.customer.customer.customerId);
-    const [showCheckout, setshowCheckout] = useState(true);
+    const [showCheckout, setshowCheckout] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
     //------------------------ handle call api create bills ----------------------//
 
@@ -60,11 +60,10 @@ const SellingPageFooter = () => {
 
     useEffect(() => {
         if (isSuccess && data) {
-            // dispatch(clearCustomer());
-            // dispatch(clearBill());
             setshowCheckout(true);
+            dispatch(setShowBill({ bill: data, isShow: false }));
         }
-    }, [isSuccess]);
+    }, [isSuccess, data]);
 
     useEffect(() => {
         if (isError) {
@@ -78,7 +77,8 @@ const SellingPageFooter = () => {
         switch (options) {
             case 'payment':
                 if (customerId.length > 0) {
-                    if (tempBill.jewelries.length > 0) {
+                    console.log(tempBill);
+                    if (cart.length > 0) {
                         const d: CreateBillRequest = {
                             ...tempBill,
                             userId: user.userId,
@@ -112,6 +112,7 @@ const SellingPageFooter = () => {
         <div>
             {contextHolder}
             <div className="flex justify-between bg-white px-2 py-1">
+                <ShowBillModel />
                 <div>
                     <MenuItem
                         title="Mở rộng"

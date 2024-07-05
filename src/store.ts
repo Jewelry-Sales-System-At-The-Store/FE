@@ -18,8 +18,9 @@ import promotionApi from './services/promotionApi';
 import billApi from './services/billsApi';
 import customerSlice from './slices/customerSlice';
 import customerApi from './services/customerApi';
-import goldPriceApi from './services/goldPriceApi'; 
-import goldPriceSlice from './slices/goldPriceSlice'; 
+import goldPriceApi from './services/goldPriceApi';
+import goldPriceSlice from './slices/goldPriceSlice';
+import billSlice from './slices/billSlice';
 
 export const persistConfig = {
     key: 'root',
@@ -32,12 +33,13 @@ const rootReducer = combineReducers({
     jewelry: jewelrySlice,
     customer: customerSlice,
     goldPrice: goldPriceSlice,
+    bill: billSlice,
     [accountApi.reducerPath]: accountApi.reducer,
     [jewelryApi.reducerPath]: jewelryApi.reducer,
     [promotionApi.reducerPath]: promotionApi.reducer,
     [billApi.reducerPath]: billApi.reducer,
     [customerApi.reducerPath]: customerApi.reducer,
-    [goldPriceApi.reducerPath]: goldPriceApi.reducer,   
+    [goldPriceApi.reducerPath]: goldPriceApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

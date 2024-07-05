@@ -15,3 +15,8 @@ export const parseFormattedNumber = (formattedNumber: string) => {
     // Chuyển đổi chuỗi thành số thập phân
     return parseFloat(sanitizedNumber);
 };
+
+export const formatVNDate = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('vi-VN', options);
+};

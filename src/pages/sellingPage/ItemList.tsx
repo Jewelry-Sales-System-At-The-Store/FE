@@ -136,7 +136,7 @@ const ItemList = () => {
                     </div>
                 )}
             </div>
-            <div className="flex flex-1 flex-wrap gap-1 p-2 pr-4">
+            <div className="flex flex-wrap gap-2 p-2 pr-4">
                 {/* display items */}
                 {!isLoading &&
                     data &&

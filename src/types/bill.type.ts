@@ -44,5 +44,6 @@ export interface CheckoutOfflineRespone {
     initialAmount: number;
     cashBack: number;
     finalAmount: number;
+    createdAt: string;
     status: string;
 }

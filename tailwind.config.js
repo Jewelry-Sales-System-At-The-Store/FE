@@ -20,6 +20,9 @@ export default {
                 green: {
                     OUTLINE: '#5DA19F',
                 },
+                purple: {
+                    DEFAULT: '#5c6ac4',
+                },
             },
         },
     },

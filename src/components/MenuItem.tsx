@@ -31,7 +31,6 @@ const MenuItem = ({
     textStyle = '',
     isLoading,
 }: MenuItemProps) => {
-    console.log(isLoading);
     return (
         <div
             className={

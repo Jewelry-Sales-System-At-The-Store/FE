@@ -17,6 +17,7 @@ const initUser: User = {
     status: false,
     userId: '',
     username: '',
+    counterId: '',
 };
 
 const initToken: TokenDecode = {
