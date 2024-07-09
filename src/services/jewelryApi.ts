@@ -17,6 +17,7 @@ export const jewelryApi = createApi({
                 url: `api/Jewelry/GetJewelries?pageNumber=${para.pageNumber}&pageSize=${para.pageSize}&name=${para.data.name}&typeId=${para.data.jewelryTypeId}`,
                 method: 'GET',
             }),
+            providesTags: ['jewelry'],
         }),
         getJewelryTypes: builder.query<JewelryType[], void>({
             query: () => ({

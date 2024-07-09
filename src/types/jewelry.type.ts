@@ -8,6 +8,7 @@ export interface Jewelry {
     imageUrl: any;
     materials: Material[];
     totalPrice: number;
+    isSold: boolean;
 }
 
 export interface Material {

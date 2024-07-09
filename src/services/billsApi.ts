@@ -9,7 +9,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 export const billApi = createApi({
     baseQuery: baseQueryWithReauth,
-    tagTypes: ['bill'],
+    tagTypes: ['bill', 'jewelry'],
     refetchOnMountOrArgChange: true,
     endpoints: (builder) => ({
         createBill: builder.mutation<Bill, CreateBillRequest>({
@@ -24,6 +24,7 @@ export const billApi = createApi({
                 url: `api/Bill/CheckoutOffline/${para.billId}?cashAmount=${para.cashAmount}`,
                 method: 'POST',
             }),
+            invalidatesTags: ['jewelry'],
         }),
     }),
     reducerPath: 'billApi',

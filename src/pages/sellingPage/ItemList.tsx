@@ -12,7 +12,7 @@ import { FaChevronCircleRight } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearch, toggleCart } from '../../slices/jewelrySlice';
 import { RootState } from '../../store';
-import { debounce, divide } from 'lodash';
+import { debounce } from 'lodash';
 
 type SellingHeaderTab = 'Counters' | 'Jewelrys';
 interface Tab {
@@ -38,7 +38,7 @@ const ItemList = () => {
     const [itemList, setitemList] = useState<PaggingRespone<Jewelry>>({
         data: [],
         pageNumber: 1,
-        pageSize: 20,
+        pageSize: 10,
         totalPage: 0,
         totalRecord: 0,
     });
@@ -73,6 +73,14 @@ const ItemList = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.currentTarget.value);
         debouncedSearch(e.currentTarget.value);
+    };
+
+    const goToNextPage = () => {
+        setitemList({ ...itemList, pageNumber: itemList.pageNumber + 1 });
+    };
+    const goToPreviousPage = () => {
+        setitemList({ ...itemList, pageNumber: itemList.pageNumber - 1 });
+        console.log('next');
     };
     return (
         <div className="relative flex h-full flex-col">
@@ -160,12 +168,18 @@ const ItemList = () => {
                 )}
                 {/* display pagging  */}
                 {itemList.pageNumber > 1 && (
-                    <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300">
+                    <div
+                        onClick={goToPreviousPage}
+                        className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300"
+                    >
                         <FaChevronCircleLeft size={50} />
                     </div>
                 )}
                 {itemList.pageNumber < itemList.totalPage && (
-                    <div className="absolute right-0 top-1/2 -translate-x-[10px] -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300">
+                    <div
+                        onClick={goToNextPage}
+                        className="absolute right-0 top-1/2 -translate-x-[10px] -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300"
+                    >
                         <FaChevronCircleRight size={50} />
                     </div>
                 )}

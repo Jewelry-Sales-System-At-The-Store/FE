@@ -1,7 +1,6 @@
 import MenuItem from '../../components/MenuItem';
 import { FaFolderOpen } from 'react-icons/fa6';
 import { IoIosSave } from 'react-icons/io';
-import { IoIosPrint } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import billApi from '../../services/billsApi';
 import { useEffect, useState } from 'react';
@@ -16,7 +15,7 @@ import ShowBillModel from '../../components/ShowBillModel';
 import { setShowBill } from '../../slices/billSlice';
 
 const colors = ['bg-[#21a6de]', 'bg-[#df21a7]', 'bg-[#de5921]', 'bg-[#20de58]', 'bg-[#745da1]'];
-type Options = 'payment' | 'printBill' | 'customerInfo';
+type Options = 'payment' | 'customerInfo';
 interface RightOptions {
     icon: React.ReactNode;
     title: string;
@@ -36,12 +35,6 @@ const rightOptions: RightOptions[] = [
         title: 'Thanh toán',
         color: colors[0],
         id: 'payment',
-    },
-    {
-        icon: <IoIosPrint size={24} />,
-        title: 'In hóa đơn',
-        color: colors[1],
-        id: 'printBill',
     },
 ];
 
@@ -87,7 +80,6 @@ const SellingPageFooter = () => {
                             customerId: customerId,
                         };
                         console.log(d);
-
                         CreateBill(d);
                     } else {
                         messageApi.open({
@@ -99,8 +91,6 @@ const SellingPageFooter = () => {
                     dispatch(setShowCustomerModal(true));
                 }
 
-                break;
-            case 'printBill':
                 break;
             case 'customerInfo':
                 dispatch(setShowCustomerModal(true));
@@ -148,47 +138,10 @@ const SellingPageFooter = () => {
                             rightOptions[1].color
                         }
                     />
-                    <MenuItem
-                        key={rightOptions[2].id}
-                        title={rightOptions[2].title}
-                        preIcon={rightOptions[2].icon}
-                        orientation="Vertical"
-                        onItemClick={() => handleBtnClick(rightOptions[2].id)}
-                        containerStyle={
-                            ' text-white rounded-md hover:bg-gray-200 hover:text-[#333] ' +
-                            rightOptions[2].color
-                        }
-                    />
                 </div>
             </div>
             <InputCustomerModal title="Thông tin khách hàng" />
             <CheckoutModel open={showCheckout} setOpen={setshowCheckout} />
-            {/* <CustomModel
-                open={true}
-                body={
-                    <Result
-                        status="success"
-                        title="Lưu hóa đơn thành công!"
-                        subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
-                        extra={[
-                            <div className="flex justify-center gap-4 p-2">
-                                <Button
-                                    type="primary"
-                                    className="rounded-sm bg-primary px-5 py-1 !text-white"
-                                >
-                                    In hóa đơn
-                                </Button>
-                                <Button
-                                    type="primary"
-                                    className="rounded-sm bg-secondary px-5 py-1 !text-white"
-                                >
-                                    Tiếp tục thanh toán
-                                </Button>
-                            </div>,
-                        ]}
-                    />
-                }
-            /> */}
         </div>
     );
 };
