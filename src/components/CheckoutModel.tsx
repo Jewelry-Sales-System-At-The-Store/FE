@@ -58,6 +58,12 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
             setOpen(false);
         }
     }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError) {
+            console.log('error at checkout off line');
+        }
+    }, [isError]);
     return (
         <div>
             {contextHolder}

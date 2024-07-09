@@ -3,7 +3,7 @@ import { fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/reac
 import 'immer';
 const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:5188/',
-    prepareHeaders: async (headers, { getState }) => {
+    prepareHeaders: async (headers) => {
         // const token = await AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
         // if (token) {
         //   headers.set('Authorization', `Bearer ${token}`);
