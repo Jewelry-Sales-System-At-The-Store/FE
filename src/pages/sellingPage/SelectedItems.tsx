@@ -1,11 +1,10 @@
 import { Button, Popconfirm, Table, TableProps, Tag, Tooltip } from 'antd';
 import { FaClock } from 'react-icons/fa';
-import { FaDollarSign } from 'react-icons/fa6';
 import { CartItem } from '../../types/cart.type';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { removeFromCart } from '../../slices/jewelrySlice';
-import { formatNumber, toMoney } from '../../utils/formater';
+import { toMoney } from '../../utils/formater';
 
 import { MdDelete } from 'react-icons/md';
 import SelectPromotionModal from '../../components/SelectPromotionModal';

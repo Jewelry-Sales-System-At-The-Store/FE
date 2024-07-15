@@ -15,6 +15,7 @@ import { MdOutlinePayments } from 'react-icons/md';
 import billApi from '../services/billsApi';
 import { setCheckoutOffLineData, setIsShowBill } from '../slices/billSlice';
 import OnlineCheckout from './OnlineCheckout';
+import warrantyApi from '../services/warranty';
 interface CheckoutModelProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,6 +54,7 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
     };
     useEffect(() => {
         if (isSuccess) {
+            createWarranties();
             dispatch(setCheckoutOffLineData(data));
             dispatch(setIsShowBill(true));
             messageApi.success('Thanh toán thành công!');
@@ -65,6 +67,22 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
             console.log('error at checkout off line');
         }
     }, [isError]);
+
+    //------------------------- call warranty ----------------------//
+    const getEndWarranty = () => {
+        const currentDate = new Date(createBillResult.saleDate);
+        currentDate.setFullYear(currentDate.getFullYear() + 2);
+        return currentDate.toISOString();
+    };
+    const [AddWarranty] = warrantyApi.useAddWarrantyMutation();
+
+    const createWarranties = () => {
+        const endDate = getEndWarranty();
+        createBillResult.items.forEach((item) => {
+            AddWarranty({ jewelryId: item.jewelryId, description: 'Warranty', endDate });
+        });
+    };
+
     return (
         <div>
             {contextHolder}

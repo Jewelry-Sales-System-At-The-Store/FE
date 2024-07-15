@@ -102,6 +102,7 @@ export const jewelrySlice = createSlice({
             state.promotionsSelected = [];
             state.cart = [];
             state.tempCart = initTempCart;
+            state.selectedPaymentMethod = 0;
         },
         callMoney,
         toggelPromotion(state, action: PayloadAction<TermPromotion>) {

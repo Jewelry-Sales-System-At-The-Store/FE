@@ -15,6 +15,12 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
         content: () => componentRef.current,
     });
     const bill = useSelector((state: RootState) => state.bill.showBill.bill);
+    const customer = useSelector((state: RootState) => state.customer.customer);
+    const getEndWarranty = () => {
+        const currentDate = new Date(bill.saleDate);
+        currentDate.setFullYear(currentDate.getFullYear() + 2);
+        return formatVNDate(currentDate);
+    };
 
     useEffect(() => {
         if (isPrint) {
@@ -78,22 +84,25 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                                 <tr>
                                     <td className="w-1/2 align-top">
                                         <div className="text-sm text-neutral-600">
-                                            <p className="font-bold">Liceria & Co.</p>
-                                            <p>Number: 23456789</p>
+                                            <p className="font-bold text-purple">Liceria & Co.</p>
+                                            <p>Số: 23456789</p>
                                             <p>VAT: 23456789</p>
-                                            <p>6622 Abshire Mills</p>
-                                            <p>Port Orlofurt, 05820</p>
-                                            <p>United States</p>
+                                            <p className="max-w-[200px] text-wrap">
+                                                Địa chỉ: 192 Đ. Man Thiện, Hiệp Phú, Quận 9, Hồ Chí
+                                                Minh, Việt Nam
+                                            </p>
                                         </div>
                                     </td>
                                     <td className="w-1/2 text-right align-top">
                                         <div className="text-sm text-neutral-600">
-                                            <p className="font-bold">Khách hàng</p>
+                                            <p className="font-bold text-purple">Khách hàng</p>
                                             <p>Họ Tên: {bill.customerName}</p>
-                                            <p>VAT: 23456789</p>
-                                            <p>9552 Vandervort Spurs</p>
-                                            <p>Paradise, 43325</p>
-                                            <p>United States</p>
+                                            <p>Số điện thoại: {customer.phone}</p>
+                                            <div className="flex justify-end">
+                                                <p className="max-w-[200px] text-wrap">
+                                                    Địa chỉ: {customer.address}
+                                                </p>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -211,18 +220,17 @@ const PrintInvoice = ({ isPrint }: PrintInvoiceProps) => {
                     </div>
 
                     <div className="px-14 text-sm text-neutral-700">
-                        <p className="text-main font-bold text-purple">PAYMENT DETAILS</p>
-                        <p>Banks of Banks</p>
-                        <p>Bank/Sort Code: 1234567</p>
-                        <p>Account Number: 123456678</p>
-                        <p>Payment Reference: BRA-00335</p>
+                        <p className="text-main font-bold text-purple">Thông tin bảo hành</p>
+                        <p className="italic">
+                            Các sản phẩm trên có thời gian bảo hành từ {formatVNDate(new Date())}{' '}
+                            đến hết {getEndWarranty()}.{' '}
+                        </p>
                     </div>
 
                     <div className="px-14 py-10 text-sm text-neutral-700">
                         <p className="text-main font-bold text-purple">Notes</p>
                         <p className="italic">
-                            Lorem ipsum is placeholder text commonly used in the graphic, print, and
-                            publishing industries for previewing layouts and visual mockups.
+                            Vui lòng mang theo phiếu này khi bảo hành hoặc đổi trả.
                         </p>
                     </div>
 
