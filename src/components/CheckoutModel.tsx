@@ -14,6 +14,7 @@ import { FaAngleLeft } from 'react-icons/fa6';
 import { MdOutlinePayments } from 'react-icons/md';
 import billApi from '../services/billsApi';
 import { setCheckoutOffLineData, setIsShowBill } from '../slices/billSlice';
+import OnlineCheckout from './OnlineCheckout';
 interface CheckoutModelProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -188,6 +189,7 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                 >
                                     Quay lại
                                 </Button>
+                                <OnlineCheckout billId={createBillResult.billId} />
                             </div>
                         )}
                     </div>

@@ -47,3 +47,9 @@ export interface CheckoutOfflineRespone {
     createdAt: string;
     status: string;
 }
+
+export interface CheckoutOnlineRespone {
+    checkoutUrl: string
+    billId: string
+    orderCode: number
+}

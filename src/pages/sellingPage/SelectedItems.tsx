@@ -5,7 +5,7 @@ import { CartItem } from '../../types/cart.type';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { removeFromCart } from '../../slices/jewelrySlice';
-import { formatNumber } from '../../utils/formater';
+import { formatNumber, toMoney } from '../../utils/formater';
 
 import { MdDelete } from 'react-icons/md';
 import SelectPromotionModal from '../../components/SelectPromotionModal';
@@ -57,7 +57,7 @@ const SelectedItems = () => {
             dataIndex: 'price',
             key: 'price',
             render: (_, { price }) => (
-                <p className="text-sm font-medium text-red-400">{formatNumber(price + '')}</p>
+                <p className="text-sm font-medium text-red-400">{toMoney(price)}</p>
             ),
         },
 
@@ -101,9 +101,8 @@ const SelectedItems = () => {
                 </div>
                 <div>
                     <div className="flex items-center gap-1">
-                        <FaDollarSign />
-                        <p className="text-lg font-medium">phải trả: </p>
-                        <p className="text-xl font-semibold">{formatNumber(tempCart.pay + '')}</p>
+                        <p className="text-lg font-medium">Phải trả: </p>
+                        <p className="text-xl font-semibold">{toMoney(tempCart.pay)}</p>
                     </div>
                 </div>
             </div>
@@ -118,7 +117,7 @@ const SelectedItems = () => {
                 <div className="flex items-center justify-end gap-1">
                     <p className="text-lg">Tổng tiền:</p>
                     <div className="rounded-sm bg-white px-2 text-xl font-medium text-[#333]">
-                        <p>{formatNumber(tempCart.totalPrice + '')}</p>
+                        <p>{toMoney(tempCart.totalPrice)}</p>
                     </div>
                 </div>
                 <div className="flex cursor-pointer items-center justify-end gap-1">
@@ -127,7 +126,7 @@ const SelectedItems = () => {
                         title="Điều chỉnh khuyến mãi"
                         childen={
                             <div className="rounded-sm bg-white px-2 text-xl font-medium text-[#333]">
-                                <p>{formatNumber(tempCart.discount + '')}</p>
+                                <p>{toMoney(tempCart.discount)}</p>
                             </div>
                         }
                     />

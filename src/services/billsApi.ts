@@ -2,6 +2,7 @@ import {
     Bill,
     CheckoutOfflineRequest,
     CheckoutOfflineRespone,
+    CheckoutOnlineRespone,
     CreateBillRequest,
 } from '../types/bill.type';
 import { baseQueryWithReauth } from './baseApi';
@@ -25,6 +26,12 @@ export const billApi = createApi({
                 method: 'POST',
             }),
             invalidatesTags: ['jewelry'],
+        }),
+        checkoutOnline: builder.query<CheckoutOnlineRespone, string>({
+            query: (para) => ({
+                url: `api/Bill/CheckoutOnline/${para}`,
+                method: 'GET',
+            }),
         }),
     }),
     reducerPath: 'billApi',

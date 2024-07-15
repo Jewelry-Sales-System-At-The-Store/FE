@@ -20,3 +20,7 @@ export const formatVNDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString('vi-VN', options);
 };
+
+export const toMoney = (number:number) => {
+    return formatNumber(""+number)+" ₫";
+}
