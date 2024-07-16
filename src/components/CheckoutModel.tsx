@@ -54,11 +54,8 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
     };
     useEffect(() => {
         if (isSuccess) {
-            createWarranties();
             dispatch(setCheckoutOffLineData(data));
-            dispatch(setIsShowBill(true));
-            messageApi.success('Thanh toán thành công!');
-            setOpen(false);
+            onOnlineSuccess();
         }
     }, [isSuccess]);
 
@@ -67,6 +64,25 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
             console.log('error at checkout off line');
         }
     }, [isError]);
+
+    const onOnlineSuccess = () => {
+        createWarranties();
+        dispatch(setIsShowBill(true));
+        messageApi.success('Thanh toán thành công!');
+        setOpen(false);
+    };
+
+    //------------------------- online checkout ----------------------//
+    const [
+        CheckoutOnl,
+        { data: checkoutOnlData, isLoading: isCheckoutOnlLoading, isError: isCheckoutOnlError },
+    ] = billApi.useCheckoutOnlineMutation();
+
+    useEffect(() => {
+        if (isCheckoutOnlError) {
+            console.log('error at checkout online');
+        }
+    }, [isCheckoutOnlError]);
 
     //------------------------- call warranty ----------------------//
     const getEndWarranty = () => {
@@ -103,7 +119,16 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                             <img
                                                 src={i.src}
                                                 className="h-[150px] max-h-[150px] min-h-[150px] w-[150px] cursor-pointer rounded-full object-cover"
-                                                onClick={() => setselectMethod(i.id)}
+                                                onClick={() => {
+                                                    setselectMethod(i.id);
+                                                    if (i.id == 2) {
+                                                        CheckoutOnl({
+                                                            amount: createBillResult.totalAmount,
+                                                            id: createBillResult.billId,
+                                                            returnUrl: 'http://localhost:5173',
+                                                        });
+                                                    }
+                                                }}
                                             />
                                             {selectMethod === i.id && (
                                                 <div className="absolute right-0 top-0 rounded-full bg-white">
@@ -207,7 +232,11 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                 >
                                     Quay lại
                                 </Button>
-                                <OnlineCheckout billId={createBillResult.billId} />
+                                <OnlineCheckout
+                                    isLoading={isCheckoutOnlLoading}
+                                    data={checkoutOnlData}
+                                    onPaymentSuccess={onOnlineSuccess}
+                                />
                             </div>
                         )}
                     </div>

@@ -53,3 +53,8 @@ export interface CheckoutOnlineRespone {
     billId: string
     orderCode: number
 }
+export interface CheckoutOnlineRequest {
+    id: string,
+    amount: number,
+    returnUrl: string
+}

@@ -2,6 +2,7 @@ import {
     Bill,
     CheckoutOfflineRequest,
     CheckoutOfflineRespone,
+    CheckoutOnlineRequest,
     CheckoutOnlineRespone,
     CreateBillRequest,
 } from '../types/bill.type';
@@ -27,10 +28,11 @@ export const billApi = createApi({
             }),
             invalidatesTags: ['jewelry'],
         }),
-        checkoutOnline: builder.query<CheckoutOnlineRespone, string>({
-            query: (para) => ({
-                url: `api/Bill/CheckoutOnline/${para}`,
-                method: 'GET',
+        checkoutOnline: builder.mutation<CheckoutOnlineRespone, CheckoutOnlineRequest>({
+            query: (body) => ({
+                url: `api/Bill/CheckoutOnline/${body.id}`,
+                method: 'POST',
+                body
             }),
         }),
     }),
