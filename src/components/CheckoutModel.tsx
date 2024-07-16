@@ -121,13 +121,6 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                                 className="h-[150px] max-h-[150px] min-h-[150px] w-[150px] cursor-pointer rounded-full object-cover"
                                                 onClick={() => {
                                                     setselectMethod(i.id);
-                                                    if (i.id == 2) {
-                                                        CheckoutOnl({
-                                                            amount: createBillResult.totalAmount,
-                                                            id: createBillResult.billId,
-                                                            returnUrl: 'http://localhost:5173',
-                                                        });
-                                                    }
                                                 }}
                                             />
                                             {selectMethod === i.id && (
@@ -157,7 +150,16 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                         className="mt-8 w-full rounded-sm bg-secondary hover:!bg-secondary-LIGHT"
                                         type="primary"
                                         disabled={selectMethod == 0}
-                                        onClick={() => dispatch(setPaymentMethod(selectMethod))}
+                                        onClick={() => {
+                                            dispatch(setPaymentMethod(selectMethod));
+                                            if (selectMethod == 2) {
+                                                CheckoutOnl({
+                                                    amount: createBillResult.totalAmount,
+                                                    id: createBillResult.billId,
+                                                    returnUrl: 'http://localhost:5173',
+                                                });
+                                            }
+                                        }}
                                         size="large"
                                         icon={<FaArrowRight />}
                                         iconPosition="end"

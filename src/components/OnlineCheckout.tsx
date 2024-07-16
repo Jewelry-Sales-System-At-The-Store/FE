@@ -1,5 +1,5 @@
 import { message, Skeleton } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { CheckoutOnlineRespone } from '../types/bill.type';
 import IframeComponent from './IframeComponent';
 
