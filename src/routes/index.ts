@@ -1,6 +1,7 @@
 import DefaultLayout from '../layouts/DefaultLayout';
 import DefaultManagerLayout from '../layouts/managers/DefaultManagerLayout';
 import Home from '../pages/Home';
+import BuyBackPage from '../pages/buyBackPage/BuyBackPage';
 import GoldPricePage from '../pages/goldPricePage/GoldPricePage';
 import LoginPage from '../pages/loginPage/LoginPage';
 import PaymentResultPage from '../pages/paymentResultPage/PaymentResultPage';
@@ -28,6 +29,7 @@ const publicRoutes: RouteProps[] = [
 const managerRoutes: RouteProps[] = [
     { path: '/manager/selling', component: SellingPage, layout: DefaultManagerLayout },
     { path: '/manager/gold-price', component: GoldPricePage, layout: DefaultManagerLayout },
+    { path: '/manager/buy-back', component: BuyBackPage, layout: DefaultManagerLayout },
 ];
 
 export { publicRoutes, managerRoutes };

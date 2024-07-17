@@ -3,7 +3,7 @@ import { IoMdSettings } from 'react-icons/io';
 import { FaShoppingCart } from 'react-icons/fa';
 import { FaFileInvoiceDollar } from 'react-icons/fa';
 import { FaGift } from 'react-icons/fa';
-import { FaDollarSign } from 'react-icons/fa6';
+import { FaCartArrowDown, FaDollarSign } from 'react-icons/fa6';
 import { MdHomeWork } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
 import { GiGoldBar } from 'react-icons/gi';
@@ -52,10 +52,10 @@ const menus: HeaderMenu[] = [
         href: '',
     },
     {
-        title: 'Doanh thu',
-        preIcon: <FaFileInvoiceDollar />,
+        title: 'Mua lại',
+        preIcon: <FaCartArrowDown />,
         id: 6,
-        href: '',
+        href: '/manager/buy-back',
     },
     {
         title: 'Bán hàng',
