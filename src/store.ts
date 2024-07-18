@@ -22,11 +22,12 @@ import goldPriceApi from './services/goldPriceApi';
 import goldPriceSlice from './slices/goldPriceSlice';
 import billSlice from './slices/billSlice';
 import warrantyApi from './services/warranty';
+import buybackSlice from './slices/buybackSlice';
 
 export const persistConfig = {
     key: 'root',
     storage: sessionStorage,
-    whitelist: ['auth', 'jewelry','customer','bill'],
+    whitelist: ['auth', 'jewelry','customer','bill','buyBack'],
 };
 
 const rootReducer = combineReducers({
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
     jewelry: jewelrySlice,
     customer: customerSlice,
     goldPrice: goldPriceSlice,
+    buyBack: buybackSlice,
     bill: billSlice,
     [accountApi.reducerPath]: accountApi.reducer,
     [jewelryApi.reducerPath]: jewelryApi.reducer,
