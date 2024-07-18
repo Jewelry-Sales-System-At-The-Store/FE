@@ -1,6 +1,6 @@
 import { Jewelry } from '../types/jewelry.type';
 import { FaCheckCircle } from 'react-icons/fa';
-import { formatNumber, toMoney } from '../utils/formater';
+import { toMoney } from '../utils/formater';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 

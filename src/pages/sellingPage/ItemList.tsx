@@ -1,4 +1,4 @@
-import { Empty, Input, Popover, Spin } from 'antd';
+import { Empty, Input, Popover, Skeleton } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { FaTags } from 'react-icons/fa';
 import { FaCaretDown } from 'react-icons/fa';
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSearch, toggleCart } from '../../slices/jewelrySlice';
 import { RootState } from '../../store';
 import { debounce } from 'lodash';
+import CounterList from './CounterList';
 
 type SellingHeaderTab = 'Counters' | 'Jewelrys';
 interface Tab {
@@ -38,18 +39,19 @@ const ItemList = () => {
     const [itemList, setitemList] = useState<PaggingRespone<Jewelry>>({
         data: [],
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 20,
         totalPage: 0,
         totalRecord: 0,
     });
     const search = useSelector((state: RootState) => state.jewelry.search);
     const [searchText, setSearchText] = useState('');
     //-----------------------handle call get Jewelries ---------------------------//
-    const { data, isSuccess, isLoading, isError, error } = jewelryApi.useGetJewelriesQuery({
-        pageNumber: itemList.pageNumber,
-        pageSize: itemList.pageSize,
-        data: { jewelryTypeId: selectedType, name: search },
-    });
+    const { data, isSuccess, isFetching, isError, error, refetch } =
+        jewelryApi.useGetJewelriesQuery({
+            pageNumber: itemList.pageNumber,
+            pageSize: itemList.pageSize,
+            data: { jewelryTypeId: selectedType, name: search },
+        });
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -77,10 +79,11 @@ const ItemList = () => {
 
     const goToNextPage = () => {
         setitemList({ ...itemList, pageNumber: itemList.pageNumber + 1 });
+        refetch();
     };
     const goToPreviousPage = () => {
         setitemList({ ...itemList, pageNumber: itemList.pageNumber - 1 });
-        console.log('next');
+        refetch();
     };
     return (
         <div className="relative flex h-full flex-col">
@@ -102,7 +105,7 @@ const ItemList = () => {
                 <div className="flex-1">
                     <Input
                         style={{ borderRadius: 0, borderColor: '#5DA19F' }}
-                        placeholder="Nhập mã hàng hoặc tên hàng để tìm kiếm"
+                        placeholder="Nhập tên hàng  để tìm kiếm"
                         value={searchText}
                         onChange={handleChange}
                     />
@@ -144,46 +147,51 @@ const ItemList = () => {
                     </div>
                 )}
             </div>
-            <div className="flex flex-wrap gap-2 p-2 pr-4">
-                {/* display items */}
-                {!isLoading &&
-                    data &&
-                    itemList.data.map((item, index) => (
-                        <Item
-                            onItemClick={() => dispatch(toggleCart(item))}
-                            item={item}
-                            key={index}
-                        />
-                    ))}
+            {selectedTab == tabs[1].id && (
+                <div className="flex flex-wrap gap-2 p-2 pr-4">
+                    {/* display items */}
+                    {!isFetching &&
+                        data &&
+                        itemList.data.map((item, index) => (
+                            <Item
+                                onItemClick={() => dispatch(toggleCart(item))}
+                                item={item}
+                                key={index}
+                            />
+                        ))}
 
-                {!isLoading && itemList.data.length == 0 && (
-                    <div className="m-auto">
-                        <Empty description="Không tìm thấy sản phẩm nào." />
-                    </div>
-                )}
-                {isLoading && (
-                    <div className="flex flex-1 items-center justify-center">
-                        <Spin size="large" />
-                    </div>
-                )}
-                {/* display pagging  */}
-                {itemList.pageNumber > 1 && (
-                    <div
-                        onClick={goToPreviousPage}
-                        className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300"
-                    >
-                        <FaChevronCircleLeft size={50} />
-                    </div>
-                )}
-                {itemList.pageNumber < itemList.totalPage && (
-                    <div
-                        onClick={goToNextPage}
-                        className="absolute right-0 top-1/2 -translate-x-[10px] -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300"
-                    >
-                        <FaChevronCircleRight size={50} />
-                    </div>
-                )}
-            </div>
+                    {!isFetching && itemList.data.length == 0 && (
+                        <div className="m-auto">
+                            <Empty description="Không tìm thấy sản phẩm nào." />
+                        </div>
+                    )}
+                    {isFetching && (
+                        <div className="flex flex-1 flex-col">
+                            <Skeleton active />
+                            <Skeleton active />
+                            <Skeleton active />
+                        </div>
+                    )}
+                    {/* display pagging  */}
+                    {itemList.pageNumber > 1 && (
+                        <div
+                            onClick={goToPreviousPage}
+                            className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300"
+                        >
+                            <FaChevronCircleLeft size={50} />
+                        </div>
+                    )}
+                    {itemList.pageNumber < itemList.totalPage && (
+                        <div
+                            onClick={goToNextPage}
+                            className="absolute right-0 top-1/2 -translate-x-[10px] -translate-y-1/2 cursor-pointer rounded-full bg-white text-primary hover:text-sky-300"
+                        >
+                            <FaChevronCircleRight size={50} />
+                        </div>
+                    )}
+                </div>
+            )}
+            {selectedTab == tabs[0].id && <CounterList />}
         </div>
     );
 };

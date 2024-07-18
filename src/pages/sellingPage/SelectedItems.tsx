@@ -12,6 +12,7 @@ import SelectPromotionModal from '../../components/SelectPromotionModal';
 const SelectedItems = () => {
     const cart = useSelector((state: RootState) => state.jewelry.cart);
     const tempCart = useSelector((state: RootState) => state.jewelry.tempCart);
+    const counterNumber = useSelector((state: RootState) => state.auth.user.counterNumber);
 
     const dispatch = useDispatch();
     const getCurrentTime = () => {
@@ -84,20 +85,13 @@ const SelectedItems = () => {
     return (
         <div className="flex min-w-[600px] max-w-[600px] flex-col gap-2 bg-primary px-2 pt-1 text-white">
             <div className="flex justify-between">
-                <p className="font-medium">Quầy 15 - Bán hàng</p>
+                <p className="font-medium">Quầy {counterNumber} - Bán hàng</p>
                 <div className="flex items-center gap-1">
                     <FaClock /> <p> Giờ: {getCurrentTime()}</p>
                 </div>
             </div>
             <div className="flex justify-between">
-                <div className="flex gap-4">
-                    <Button className="!bg-secondary-DARK py-0 text-white hover:border-secondary-DARK hover:!text-white">
-                        Sửa
-                    </Button>
-                    <Button className="!bg-secondary-DARK align-middle text-white hover:border-secondary-DARK hover:!text-white">
-                        In nhãn
-                    </Button>
-                </div>
+                <div className="flex gap-4"></div>
                 <div>
                     <div className="flex items-center gap-1">
                         <p className="text-lg font-medium">Phải trả: </p>
