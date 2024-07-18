@@ -4,7 +4,7 @@ import company from '../assets/logo.png';
 import { useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa6';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setBuyBackMethod } from '../slices/buybackSlice';
 interface SelectBuyBackOptionsModelProps {
     open: boolean;

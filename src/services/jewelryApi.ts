@@ -25,6 +25,12 @@ export const jewelryApi = createApi({
                 method: 'GET',
             }),
         }),
+        getJewelryById: builder.query<Jewelry, string>({
+            query: (id) => ({
+                url: `api/Jewelry/GetJewelryById/${id}`,
+                method: 'GET',
+            }),
+        }),
     }),
     reducerPath: 'jewelryApi',
 });
