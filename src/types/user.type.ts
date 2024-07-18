@@ -1,6 +1,8 @@
+import { RoleType } from "../enums";
+
 export interface User {
     userId: string;
-    roleName: string;
+    roleName: RoleType;
     counterNumber: number;
     username: string;
     fullName: string;

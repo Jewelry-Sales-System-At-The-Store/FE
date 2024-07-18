@@ -1,15 +1,16 @@
+import { RoleType } from '../enums';
 import DefaultLayout from '../layouts/DefaultLayout';
 import DefaultManagerLayout from '../layouts/managers/DefaultManagerLayout';
 import Home from '../pages/Home';
 import BuyBackPage from '../pages/buyBackPage/BuyBackPage';
 import GoldPricePage from '../pages/goldPricePage/GoldPricePage';
 import LoginPage from '../pages/loginPage/LoginPage';
-import PaymentResultPage from '../pages/paymentResultPage/PaymentResultPage';
+import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
 import SellingPage from '../pages/sellingPage/SellingPage';
 
-interface LayoutProps {
+export interface LayoutProps {
     childen: React.ReactNode;
-    requireRole?: number;
+    requireRole?: RoleType[];
     whenRoleUnMatchNavTo?: string;
 }
 
@@ -23,7 +24,7 @@ const publicRoutes: RouteProps[] = [
     // { path: '/', component: HomePage, layout: DefaultLayout },
     { path: '/login', component: LoginPage, layout: DefaultLayout },
     { path: '/', component: Home, layout: DefaultLayout },
-    { path: '/*', component: PaymentResultPage, layout: DefaultLayout },
+    { path: '/*', component: NotFoundPage, layout: DefaultLayout },
 ];
 
 const managerRoutes: RouteProps[] = [

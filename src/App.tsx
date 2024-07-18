@@ -27,7 +27,13 @@ function App() {
                             <Route
                                 key={index}
                                 path={path}
-                                element={<Layout childen={<Component />} />}
+                                element={
+                                    <Layout
+                                        childen={<Component />}
+                                        requireRole={['Manager', 'Staff']}
+                                        whenRoleUnMatchNavTo="/login"
+                                    />
+                                }
                             />
                         );
                     })}

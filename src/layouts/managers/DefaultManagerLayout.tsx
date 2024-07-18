@@ -1,16 +1,13 @@
+import React, { useEffect } from 'react';
 import HeaderMenuDropDown from './HeaderMenuDropDown';
 import { IoMdSettings } from 'react-icons/io';
-import { FaShoppingCart } from 'react-icons/fa';
-import { FaFileInvoiceDollar } from 'react-icons/fa';
-import { FaGift } from 'react-icons/fa';
-import { FaCartArrowDown, FaDollarSign } from 'react-icons/fa6';
-import { MdHomeWork } from 'react-icons/md';
-import { MdCategory } from 'react-icons/md';
+import { FaShoppingCart, FaGift, FaCartArrowDown, FaDollarSign, FaUser } from 'react-icons/fa';
+import { MdHomeWork, MdCategory } from 'react-icons/md';
 import { GiGoldBar } from 'react-icons/gi';
-import { FaUser } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { LayoutProps } from '../../routes';
 
 interface HeaderMenu {
     preIcon?: React.ReactNode;
@@ -71,12 +68,17 @@ const menus: HeaderMenu[] = [
     },
 ];
 
-const DefaultManagerLayout = ({ childen }: { childen: React.ReactNode }) => {
+const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: LayoutProps) => {
     const navigate = useNavigate();
+    const currentRole = useSelector((state: RootState) => state.auth.user.roleName);
     const location = useLocation();
-    const user = useSelector((state: RootState) => state.auth.user);
 
-    console.log(user);
+    useEffect(() => {
+        if (!requireRole?.includes(currentRole) && whenRoleUnMatchNavTo) {
+            navigate(whenRoleUnMatchNavTo);
+        }
+    }, [currentRole, requireRole, whenRoleUnMatchNavTo, navigate]);
+
     return (
         <div className="flex min-h-screen w-full flex-col">
             <div className="sticky flex justify-between">
@@ -86,7 +88,7 @@ const DefaultManagerLayout = ({ childen }: { childen: React.ReactNode }) => {
                             key={menu.id}
                             title={menu.title}
                             preIcon={menu.preIcon}
-                            isSelect={location.pathname == menu.href}
+                            isSelect={location.pathname === menu.href}
                             onItemClick={() => {
                                 navigate(menu.href);
                             }}

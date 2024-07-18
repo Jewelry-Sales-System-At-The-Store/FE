@@ -13,7 +13,7 @@ const initUser: User = {
     fullName: '',
     gender: '',
     phoneNumber: '',
-    roleName: '',
+    roleName: 'Guest',
     status: false,
     userId: '',
     username: '',
