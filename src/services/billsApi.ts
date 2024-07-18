@@ -35,6 +35,12 @@ export const billApi = createApi({
                 body
             }),
         }),
+        getBillBuyId: builder.query<Bill, string>({
+            query: (para) => ({
+                url: `api/Bill/GetBillById/${para}`,
+                method: 'GET',
+            }),
+        }),
     }),
     reducerPath: 'billApi',
 });

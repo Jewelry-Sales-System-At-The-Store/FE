@@ -24,6 +24,7 @@ import billSlice from './slices/billSlice';
 import warrantyApi from './services/warranty';
 import buybackSlice from './slices/buybackSlice';
 import counterApi from './services/counterApi';
+import buyBackApi from './services/buyBackApi';
 
 export const persistConfig = {
     key: 'root',
@@ -46,6 +47,7 @@ const rootReducer = combineReducers({
     [goldPriceApi.reducerPath]: goldPriceApi.reducer,
     [warrantyApi.reducerPath]: warrantyApi.reducer,
     [counterApi.reducerPath]: counterApi.reducer,
+    [buyBackApi.reducerPath]: buyBackApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -66,6 +68,7 @@ export const store = configureStore({
             .concat(goldPriceApi.middleware)
             .concat(warrantyApi.middleware)
             .concat(counterApi.middleware)
+            .concat(buyBackApi.middleware)
 });
 
 // get roostate and appdispatch from store handle for typescript
