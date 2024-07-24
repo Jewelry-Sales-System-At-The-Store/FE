@@ -20,6 +20,9 @@ export const accountApi = createApi({
                 method: 'POST',
                 body: signInRequest,
             }),
+            extraOptions:{
+                hasHeader: false
+            }
         }),
 
         getUserById: builder.query<User, string>({

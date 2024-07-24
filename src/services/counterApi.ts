@@ -14,6 +14,9 @@ export const counterApi = createApi({
                 url: `api/Counter/GetAvailableCounters`,
                 method: 'GET',
             }),
+            extraOptions:{
+                hasHeader: false
+            }
         }),
     }),
     reducerPath: 'counterApi',

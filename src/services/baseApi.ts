@@ -12,12 +12,26 @@ const baseQuery = fetchBaseQuery({
     },
 });
 
+const baseQueryNoHeader = fetchBaseQuery({
+    baseUrl: 'http://localhost:5188/',
+    prepareHeaders: async (headers) => {
+       
+        return headers;
+    },
+});
+
 export const baseQueryWithReauth: (args: any, api: any, extraOptions: any) => any = async (
     args: any,
     api: any,
     extraOptions: any,
 ) => {
-    let response = await baseQuery(args, api, extraOptions);
+    const hasHeader = extraOptions?.hasHeader ?? true;
+  let response;
+  if (hasHeader) {
+    response = await baseQuery(args, api, extraOptions);
+  } else {
+    response = await baseQueryNoHeader(args, api, extraOptions);
+  }
 
     if (response.error && (response.error as FetchBaseQueryError).status === 401) {
         

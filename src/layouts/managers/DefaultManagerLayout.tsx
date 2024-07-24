@@ -4,10 +4,12 @@ import { IoMdSettings } from 'react-icons/io';
 import { FaShoppingCart, FaGift, FaCartArrowDown, FaDollarSign, FaUser } from 'react-icons/fa';
 import { MdHomeWork, MdCategory } from 'react-icons/md';
 import { GiGoldBar } from 'react-icons/gi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LayoutProps } from '../../routes';
+import accountApi from '../../services/accountApi';
+import { setUser } from '../../slices/authSlice';
 
 interface HeaderMenu {
     preIcon?: React.ReactNode;
@@ -70,9 +72,32 @@ const menus: HeaderMenu[] = [
 
 const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: LayoutProps) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const currentRole = useSelector((state: RootState) => state.auth.user.roleName);
+    const userId = useSelector((state: RootState) => state.auth.tokenDecode.nameid);
     const location = useLocation();
+    //-------------------------- handle call call api get user info --------------------------------//
 
+    const {
+        isSuccess: isGetUserSuccess,
+        isError: isGetUserError,
+        data: userData,
+        error: getUserError,
+    } = accountApi.useGetUserByIdQuery(userId);
+
+    useEffect(() => {
+        if (isGetUserSuccess && userData) {
+            dispatch(setUser(userData));
+        }
+    }, [isGetUserSuccess]);
+
+    useEffect(() => {
+        if (isGetUserError) {
+            console.log(getUserError);
+        }
+    }, [isGetUserError]);
+
+    //-------------------------- end handle call call api get user info --------------------------------//
     useEffect(() => {
         if (!requireRole?.includes(currentRole) && whenRoleUnMatchNavTo) {
             navigate(whenRoleUnMatchNavTo);

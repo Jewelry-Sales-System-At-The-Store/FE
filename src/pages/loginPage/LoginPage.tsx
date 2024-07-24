@@ -7,14 +7,12 @@ import { SignInRequest, TokenDecode } from '../../types/user.type';
 import accountApi from '../../services/accountApi';
 import { isValidateEmail } from '../../utils/validation';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setToken, setUser } from '../../slices/authSlice';
-import { jwtDecode } from 'jwt-decode';
-import { RootState } from '../../store';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../slices/authSlice';
+
 import counterApi from '../../services/counterApi';
 import { ItemType } from 'antd/es/menu/interface';
 import { DownOutlined } from '@ant-design/icons';
-import { Counter } from '../../types/counter.type';
 
 const LoginPage = () => {
     const [loginForm, setloginForm] = useState<SignInRequest>({
@@ -25,18 +23,15 @@ const LoginPage = () => {
     const [error, seterror] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userId = useSelector((state: RootState) => state.auth.tokenDecode.nameid);
-
     //-------------------------- handle call call api signin --------------------------------//
     const [SignIn, { isLoading, isSuccess, isError, data, error: errorRequest }] =
         accountApi.useSignInMutation();
 
     useEffect(() => {
         if (isSuccess && data) {
-            const tokenDecode = jwtDecode<TokenDecode>(data.token);
-            dispatch(setToken(tokenDecode));
-            console.log(tokenDecode);
+            dispatch(setToken(data.token));
             navigate('/manager/selling');
+            console.log('nav');
         }
     }, [isSuccess]);
 
@@ -79,32 +74,6 @@ const LoginPage = () => {
     }, [isGetCounterSuccess, counters]);
 
     //-------------------------- end handle call call api counter --------------------------------//
-
-    //-------------------------- handle call call api get user info --------------------------------//
-
-    const {
-        isLoading: isGetUserLoading,
-        isSuccess: isGetUserSuccess,
-        isError: isGetUserError,
-        data: userData,
-        error: getUserError,
-    } = accountApi.useGetUserByIdQuery(userId);
-
-    useEffect(() => {
-        if (isGetUserSuccess && userData) {
-            console.log(userData);
-            dispatch(setUser(userData));
-            navigate('/manager/selling');
-        }
-    }, [isGetUserSuccess]);
-
-    useEffect(() => {
-        if (isGetUserError) {
-            console.log(getUserError);
-        }
-    }, [isGetUserError]);
-
-    //-------------------------- end handle call call api get user info --------------------------------//
 
     const [selectedCounter, setSelectedCounter] = useState<string>('');
     const handleSelectCounter = (counterId: string, counterNumber: string) => {
@@ -190,7 +159,7 @@ const LoginPage = () => {
                         <div className="mt-4 flex justify-end">
                             <Button
                                 onClick={handleSignIn}
-                                loading={isLoading || isGetUserLoading}
+                                loading={isLoading}
                                 iconPosition="end"
                                 className="!bg-secondary p-4 font-medium text-white hover:!border-secondary-B hover:!bg-secondary-B hover:!text-white"
                                 icon={<FaArrowRight />}
