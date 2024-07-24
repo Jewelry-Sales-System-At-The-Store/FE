@@ -23,6 +23,15 @@ export const accountApi = createApi({
             extraOptions:{
                 hasHeader: false
             }
+        }),Logout: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `api/User/Logout?userId=${id}`,
+                method: 'POST',
+       
+            }),
+            extraOptions:{
+                hasHeader: false
+            }
         }),
 
         getUserById: builder.query<User, string>({

@@ -23,7 +23,7 @@ function OnlineCheckout({ data, isLoading, onPaymentSuccess, onBackClick }: Onli
     const dispatch = useDispatch();
 
     const onUrlChange = (url: string) => {
-        if (url.includes('Complete')) {
+        if (url.includes('success')) {
             setPaymentStatus('success');
             onPaymentSuccess();
         } else {

@@ -5,11 +5,13 @@ import { FaShoppingCart, FaGift, FaCartArrowDown, FaDollarSign, FaUser } from 'r
 import { MdHomeWork, MdCategory } from 'react-icons/md';
 import { GiGoldBar } from 'react-icons/gi';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { persistor, RootState } from '../../store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LayoutProps } from '../../routes';
 import accountApi from '../../services/accountApi';
 import { setUser } from '../../slices/authSlice';
+import { RoleType } from '../../enums';
+import { Button, Popover } from 'antd';
 
 interface HeaderMenu {
     preIcon?: React.ReactNode;
@@ -63,7 +65,7 @@ const menus: HeaderMenu[] = [
         href: '/manager/selling',
     },
     {
-        title: 'Già Vàng',
+        title: 'Giá Vàng',
         preIcon: <GiGoldBar />,
         id: 8,
         href: '/manager/gold-price',
@@ -73,7 +75,8 @@ const menus: HeaderMenu[] = [
 const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: LayoutProps) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    //const currentRole = useSelector((state: RootState) => state.auth.user.roleName);
+    const currentRole = useSelector((state: RootState) => state.auth.tokenDecode.role);
+    const userName = useSelector((state: RootState) => state.auth.user.fullName);
     const userId = useSelector((state: RootState) => state.auth.tokenDecode.nameid);
     const location = useLocation();
     //-------------------------- handle call call api get user info --------------------------------//
@@ -98,11 +101,29 @@ const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: La
     }, [isGetUserError]);
 
     //-------------------------- end handle call call api get user info --------------------------------//
-    // useEffect(() => {
-    //     if (!requireRole?.includes(currentRole) && whenRoleUnMatchNavTo) {
-    //         navigate(whenRoleUnMatchNavTo);
-    //     }
-    // }, [currentRole, requireRole, whenRoleUnMatchNavTo, navigate]);
+
+    const [Logout, { isSuccess, isLoading, isError, error }] = accountApi.useLogoutMutation();
+
+    useEffect(() => {
+        if (isSuccess) {
+            localStorage.clear();
+            persistor.purge().then(() => {
+                window.location.href = '/login';
+            });
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (isError) {
+            console.log(error);
+        }
+    }, [isError]);
+
+    useEffect(() => {
+        if (!requireRole?.includes(currentRole as RoleType) && whenRoleUnMatchNavTo) {
+            navigate(whenRoleUnMatchNavTo);
+        }
+    }, [currentRole, requireRole, whenRoleUnMatchNavTo, navigate]);
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -121,7 +142,26 @@ const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: La
                     ))}
                 </div>
                 <div>
-                    <HeaderMenuDropDown title={''} preIcon={<FaUser />} />
+                    <Popover
+                        content={
+                            <div>
+                                <Button
+                                    loading={isLoading}
+                                    type="dashed"
+                                    className="border-white bg-red-400 !text-white hover:!border-red-400 hover:!text-red-500"
+                                    onClick={() => Logout(userId)}
+                                >
+                                    Đăng xuất
+                                </Button>
+                            </div>
+                        }
+                        trigger="click"
+                    >
+                        <div className="flex h-full cursor-pointer items-center gap-2 px-4 text-base text-gray-600 hover:bg-gray-200">
+                            <p className="h-fit">{userName}</p>
+                            <FaUser />
+                        </div>
+                    </Popover>
                 </div>
             </div>
             <div className="flex flex-1 flex-col bg-gray">{childen}</div>
