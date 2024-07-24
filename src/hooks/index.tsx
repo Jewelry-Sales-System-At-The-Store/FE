@@ -12,10 +12,13 @@ const useIframeURLChange = (
 
         const dispatchChange = () => {
             try {
-                const newHref = iframe.contentWindow?.location.href;
-                if (newHref !== lastDispatched) {
-                    callback(newHref!);
-                    lastDispatched = newHref;
+                const isSameUrl = iframe.contentWindow;
+                if (isSameUrl) {
+                    const newHref = iframe.contentWindow?.location?.href;
+                    if (newHref !== lastDispatched) {
+                        callback(newHref!);
+                        lastDispatched = newHref;
+                    }
                 }
             } catch (error) {
                 console.error('Error accessing iframe content:', error);

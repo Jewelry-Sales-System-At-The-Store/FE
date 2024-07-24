@@ -24,7 +24,7 @@ function OnlineCheckout({ data, isLoading, onPaymentSuccess, onBackClick }: Onli
         if (url.includes('success')) {
             setPaymentStatus('success');
             onPaymentSuccess();
-        } else {
+        } else if (url.includes('canceled')) {
             setPaymentStatus('failed');
             messageApi.error('Thanh toán thất bại');
         }
@@ -60,7 +60,6 @@ function OnlineCheckout({ data, isLoading, onPaymentSuccess, onBackClick }: Onli
                     </Button>
                 </div>
             )}
-            kkkk
         </div>
     );
 }
