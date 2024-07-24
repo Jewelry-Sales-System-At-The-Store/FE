@@ -73,7 +73,7 @@ const menus: HeaderMenu[] = [
 const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: LayoutProps) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const currentRole = useSelector((state: RootState) => state.auth.user.roleName);
+    //const currentRole = useSelector((state: RootState) => state.auth.user.roleName);
     const userId = useSelector((state: RootState) => state.auth.tokenDecode.nameid);
     const location = useLocation();
     //-------------------------- handle call call api get user info --------------------------------//
@@ -98,11 +98,11 @@ const DefaultManagerLayout = ({ childen, requireRole, whenRoleUnMatchNavTo }: La
     }, [isGetUserError]);
 
     //-------------------------- end handle call call api get user info --------------------------------//
-    useEffect(() => {
-        if (!requireRole?.includes(currentRole) && whenRoleUnMatchNavTo) {
-            navigate(whenRoleUnMatchNavTo);
-        }
-    }, [currentRole, requireRole, whenRoleUnMatchNavTo, navigate]);
+    // useEffect(() => {
+    //     if (!requireRole?.includes(currentRole) && whenRoleUnMatchNavTo) {
+    //         navigate(whenRoleUnMatchNavTo);
+    //     }
+    // }, [currentRole, requireRole, whenRoleUnMatchNavTo, navigate]);
 
     return (
         <div className="flex min-h-screen w-full flex-col">

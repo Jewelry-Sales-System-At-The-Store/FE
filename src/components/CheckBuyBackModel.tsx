@@ -5,6 +5,7 @@ import CustomerModel from './CustomModel';
 import { Button, Empty, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setJewelryBuyBack } from '../slices/buybackSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface CheckBuyBackModelProps {
     open: boolean;
@@ -12,6 +13,7 @@ interface CheckBuyBackModelProps {
 
 const CheckBuyBackModel = ({ open }: CheckBuyBackModelProps) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const initValue = {
         jewelryId: '',
     };
@@ -77,6 +79,17 @@ const CheckBuyBackModel = ({ open }: CheckBuyBackModelProps) => {
                                     />
                                 </div>
                             )}
+                            <Button
+                                type="primary"
+                                className="rounded-sm bg-secondary text-white hover:!bg-secondary-LIGHT"
+                                htmlType="submit"
+                                loading={isFetching}
+                                onClick={() => {
+                                    navigate('/manager/selling');
+                                }}
+                            >
+                                Hủy
+                            </Button>
                         </div>
                     </div>
                 }

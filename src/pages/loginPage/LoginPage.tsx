@@ -31,7 +31,6 @@ const LoginPage = () => {
         if (isSuccess && data) {
             dispatch(setToken(data.token));
             navigate('/manager/selling');
-            console.log('nav');
         }
     }, [isSuccess]);
 

@@ -226,18 +226,22 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                         )}
                         {selectedPaymentMethod == 2 && (
                             <div className="mt-6 flex flex-col gap-4">
-                                <Button
+                                {/* <Button
                                     type="link"
                                     className="absolute -left-0 -top-0 text-primary-TEXT"
                                     icon={<FaAngleLeft />}
                                     onClick={() => dispatch(setPaymentMethod(0))}
                                 >
                                     Quay lại
-                                </Button>
+                                </Button> */}
                                 <OnlineCheckout
                                     isLoading={isCheckoutOnlLoading}
                                     data={checkoutOnlData}
                                     onPaymentSuccess={onOnlineSuccess}
+                                    onBackClick={() => {
+                                        dispatch(setPaymentMethod(0));
+                                        setOpen(false);
+                                    }}
                                 />
                             </div>
                         )}
