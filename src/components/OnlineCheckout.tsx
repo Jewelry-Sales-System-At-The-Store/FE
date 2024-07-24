@@ -4,9 +4,8 @@ import { CheckoutOnlineRespone } from '../types/bill.type';
 import IframeComponent from './IframeComponent';
 import failedAmin from '../assets/failed.json';
 import Lottie from 'lottie-react';
-import { FaAngleLeft } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
-import { setIsShowBill, setShowBill } from '../slices/billSlice';
+import { setPaymentMethod } from '../slices/jewelrySlice';
 
 interface OnlineCheckoutProps {
     data?: CheckoutOnlineRespone;
@@ -21,7 +20,6 @@ function OnlineCheckout({ data, isLoading, onPaymentSuccess, onBackClick }: Onli
     const [paymentStatus, setPaymentStatus] = useState<Status>('pending');
     const [messageApi, contextHolder] = message.useMessage();
     const dispatch = useDispatch();
-
     const onUrlChange = (url: string) => {
         if (url.includes('success')) {
             setPaymentStatus('success');
@@ -55,12 +53,14 @@ function OnlineCheckout({ data, isLoading, onPaymentSuccess, onBackClick }: Onli
                         size="large"
                         onClick={() => {
                             onBackClick();
+                            dispatch(setPaymentMethod(0));
                         }}
                     >
                         Đóng
                     </Button>
                 </div>
             )}
+            kkkk
         </div>
     );
 }

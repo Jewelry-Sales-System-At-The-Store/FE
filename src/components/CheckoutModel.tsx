@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { clearBill, setPaymentMethod } from '../slices/jewelrySlice';
+import { setPaymentMethod } from '../slices/jewelrySlice';
 import GetNumberModel from './GetNumberModel';
 import { formatNumber } from '../utils/formater';
 import { FaAngleLeft } from 'react-icons/fa6';
@@ -239,9 +239,6 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                     data={checkoutOnlData}
                                     onPaymentSuccess={onOnlineSuccess}
                                     onBackClick={() => {
-                                        dispatch(setPaymentMethod(0));
-                                        setselectMethod(0);
-                                        dispatch(clearBill());
                                         setOpen(false);
                                     }}
                                 />
