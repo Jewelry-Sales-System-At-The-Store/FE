@@ -56,4 +56,5 @@ export interface JewelryType {
 export interface SignInRequest {
     email: string;
     password: string;
+    counterId:string;
 }

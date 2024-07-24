@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Dropdown, Input, MenuProps, Space } from 'antd';
 import { FaUser } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa6';
 import { FaUnlock } from 'react-icons/fa';
@@ -11,9 +11,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setToken, setUser } from '../../slices/authSlice';
 import { jwtDecode } from 'jwt-decode';
 import { RootState } from '../../store';
+import counterApi from '../../services/counterApi';
+import { ItemType } from 'antd/es/menu/interface';
+import { DownOutlined } from '@ant-design/icons';
+import { Counter } from '../../types/counter.type';
 
 const LoginPage = () => {
-    const [loginForm, setloginForm] = useState<SignInRequest>({ email: '', password: '' });
+    const [loginForm, setloginForm] = useState<SignInRequest>({
+        email: '',
+        password: '',
+        counterId: '',
+    });
     const [error, seterror] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -28,6 +36,7 @@ const LoginPage = () => {
             const tokenDecode = jwtDecode<TokenDecode>(data.token);
             dispatch(setToken(tokenDecode));
             console.log(tokenDecode);
+            navigate('/manager/selling');
         }
     }, [isSuccess]);
 
@@ -44,11 +53,32 @@ const LoginPage = () => {
         } else if (loginForm.password.length == 0) {
             seterror('mật khẩu không được để trống!');
         } else {
+            console.log(loginForm);
             SignIn(loginForm);
         }
     };
 
     //-------------------------- end handle call call api signin --------------------------------//
+    //-------------------------- handle call call api get counter --------------------------------//
+    const [countersList, setcountersList] = useState<ItemType[]>([]);
+    const {
+        data: counters,
+        isLoading: isCountersLoading,
+        isSuccess: isGetCounterSuccess,
+    } = counterApi.useGetAvailableCountersQuery();
+
+    useEffect(() => {
+        if (isGetCounterSuccess && counters) {
+            const items: MenuProps['items'] = counters.map((c) => ({
+                key: c.id,
+                label: 'Quầy số ' + c.number,
+                onClick: () => handleSelectCounter(c.id, c.number),
+            }));
+            setcountersList(items);
+        }
+    }, [isGetCounterSuccess, counters]);
+
+    //-------------------------- end handle call call api counter --------------------------------//
 
     //-------------------------- handle call call api get user info --------------------------------//
 
@@ -76,6 +106,14 @@ const LoginPage = () => {
 
     //-------------------------- end handle call call api get user info --------------------------------//
 
+    const [selectedCounter, setSelectedCounter] = useState<string>('');
+    const handleSelectCounter = (counterId: string, counterNumber: string) => {
+        setloginForm((prevForm) => ({
+            ...prevForm,
+            counterId: counterId,
+        }));
+        setSelectedCounter('Quầy số ' + counterNumber);
+    };
     return (
         <div>
             <div className="flex h-full min-h-screen flex-col items-center justify-center bg-primary">
@@ -129,6 +167,24 @@ const LoginPage = () => {
                                 />
                             </div>
                         </div>
+
+                        {!isCountersLoading && counters && (
+                            <div>
+                                <Dropdown
+                                    menu={{
+                                        items: countersList,
+                                        selectable: true,
+                                    }}
+                                >
+                                    <Space>
+                                        <p className="text-sm font-semibold text-primary-TEXT">
+                                            {selectedCounter || 'Chọn quầy'}
+                                        </p>
+                                        <DownOutlined className="text-primary-TEXT" />
+                                    </Space>
+                                </Dropdown>
+                            </div>
+                        )}
                         <p className="text-sm text-red-500">{error}</p>
 
                         <div className="mt-4 flex justify-end">
