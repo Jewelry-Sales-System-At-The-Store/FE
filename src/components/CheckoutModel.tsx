@@ -240,6 +240,7 @@ const CheckoutModel = ({ open, setOpen }: CheckoutModelProps) => {
                                     onPaymentSuccess={onOnlineSuccess}
                                     onBackClick={() => {
                                         dispatch(setPaymentMethod(0));
+                                        setselectMethod(0);
                                         dispatch(clearBill());
                                         setOpen(false);
                                     }}
